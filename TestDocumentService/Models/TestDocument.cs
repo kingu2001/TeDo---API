@@ -9,6 +9,8 @@ namespace TestDocumentService.Models
         [Required]
         public int Id {get; set;}
         [Required]
+        public Participant? Participant { get; set; }
+        [Required]
         public string? Introduction  { get; set; }
         [Required]
         [NotMapped]
@@ -23,5 +25,6 @@ namespace TestDocumentService.Models
         public List<Revision>? Revisions { get; set; }
         [Required]
         public List<Test>? Tests { get; set; }
+        
     }
 }

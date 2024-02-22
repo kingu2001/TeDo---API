@@ -57,7 +57,7 @@ namespace TestDocumentService.Controllers
 
                 Console.WriteLine($"--> Test document created: {testDocumentReadDto.Id}");
 
-                return CreatedAtRoute(nameof(GetTestDocumentById), new {Id = testDocumentReadDto.Id}, testDocumentReadDto);
+                return CreatedAtRoute(nameof(GetTestDocumentById), new {id = testDocumentReadDto.Id}, testDocumentReadDto);
             }
 
             return StatusCode(500);

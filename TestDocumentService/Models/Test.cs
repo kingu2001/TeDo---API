@@ -21,5 +21,7 @@ namespace TestDocumentService.Models
         public string? SATInitials   { get; set; }
         [Required]
         public string? OATInitials   { get; set; }
+        [Required]
+        public Punch? Punch { get; set; }
     }
 }

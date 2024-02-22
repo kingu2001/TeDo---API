@@ -11,5 +11,7 @@ namespace TestDocumentService.Models
         public Firm? Firm { get; set; }
         [Required]
         public TestType TestType {get; set;}
+        [Required]
+        public TestDocument? TestDocument { get; set; }
     }
 }

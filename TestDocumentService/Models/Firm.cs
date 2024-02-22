@@ -13,6 +13,11 @@ namespace TestDocumentService.Models
         public string? Name { get; set; }
         [Required]
         public string? FullAddress { get; set; }
-                 
+        [Required]
+
+        //Navigation props
+        public List<PlaceOfTesting>? PlaceOfTestings { get; set; }   
+        [Required]
+        public List<Participant>? Participants { get; set; }  
     }
 }

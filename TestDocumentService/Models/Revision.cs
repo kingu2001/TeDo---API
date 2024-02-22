@@ -16,6 +16,8 @@ namespace TestDocumentService.Models
         [Required]
         public string? Description { get; set; }
         [Required]
-        public DateOnly Date { get; set; }             
+        public DateOnly Date { get; set; }       
+        [Required]
+        public TestDocument? TestDocument { get; set; }      
     }
 }
