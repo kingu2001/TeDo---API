@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TestDocumentService.Data;
+using TestDocumentService.Data.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
