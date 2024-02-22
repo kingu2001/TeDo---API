@@ -17,5 +17,9 @@ namespace TestDocumentService.Models
         public List<Punch>? PunchList { get; set; }
         [Required]
         public List<PlaceOfTesting>? PlacesOfTesting { get; set; }
+        [Required]
+        public List<Revision>? Revisions { get; set; }
+        [Required]
+        public List<Test>? Tests { get; set; }
     }
 }

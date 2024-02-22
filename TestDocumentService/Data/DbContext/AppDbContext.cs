@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TestDocumentService.Models;
 
-namespace TestDocumentService.Data
+namespace TestDocumentService.Data.Context
 {
     public class AppDbContext : DbContext
     {
