@@ -9,7 +9,15 @@ namespace TestDocumentService.Data.DatabaseSeed
         {
             using(var serviceScope = app.ApplicationServices.CreateScope())
             {
-                SeedData(serviceScope.ServiceProvider.GetService<AppDbContext>());
+                var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
+                if (context != null)
+                {
+                    SeedData(context);
+                }
+                else
+                {
+                    throw new ArgumentNullException(nameof(context));
+                }
             }
         }
 
@@ -25,8 +33,13 @@ namespace TestDocumentService.Data.DatabaseSeed
                 // Test test = new Test();
                 context.TestDocuments.AddRange
                 (
-                    new TestDocument() {Introduction = "Test", DefinitionAndAbbreviations = new Dictionary<string, string>(), 
-                                        DocumentSupplied = "DocumentSupplied", PunchList = new List<Punch>(), Revisions = new List<Revision>(), PlacesOfTesting = new List<PlaceOfTesting>(), Tests = new List<Test>()}
+                    new TestDocument() {Introduction = "This is testing off SPK1024", DefinitionAndAbbreviations = new Dictionary<string, string>(), 
+                                        DocumentSupplied = "PartList.txt", PunchList = new List<Punch>(), Revisions = new List<Revision>(), 
+                                        PlacesOfTesting = new List<PlaceOfTesting>(), Tests = new List<Test>()}, 
+
+                    new TestDocument() {Introduction = "This is re-testing off the PU8012 pump", DefinitionAndAbbreviations = new Dictionary<string, string>(), 
+                                        DocumentSupplied = "PartList.txt", PunchList = new List<Punch>(), Revisions = new List<Revision>(), 
+                                        PlacesOfTesting = new List<PlaceOfTesting>(), Tests = new List<Test>()}
                 );
 
                 context.SaveChanges();

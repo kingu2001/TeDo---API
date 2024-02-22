@@ -1,4 +1,6 @@
+using System.Net;
 using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using TestDocumentService.Data.Interfaces;
 using TestDocumentService.Models;
@@ -24,6 +26,41 @@ namespace TestDocumentService.Controllers
             var testDocumentItems =  _repo.GetAllPTestDocument();
 
             return Ok(_mapper.Map<IEnumerable<TestDocumentReadDto>>(testDocumentItems));
+        }
+        
+        [HttpGet("{id}", Name = "GetTestDocumentById")]
+        public ActionResult<TestDocument> GetTestDocumentById(int id)
+        {
+            //For debuging
+            Console.WriteLine($"--> Getting test document for id: {id}");
+
+            var testDocumentItem = _repo.GetTestDocumentById(id);
+
+            if(testDocumentItem != null)
+            {
+                return Ok(_mapper.Map<TestDocumentReadDto>(testDocumentItem));
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public ActionResult<TestDocument> CreateTestDocument(TestDocumentCreateDto testDocumentCreateDto)
+        {
+            var testDocumentModel = _mapper.Map<TestDocument>(testDocumentCreateDto);
+
+            _repo.CreateTestDocument(testDocumentModel);
+
+            if(_repo.SaveChanges() != false)
+            {
+                var testDocumentReadDto = _mapper.Map<TestDocumentReadDto>(testDocumentModel);
+
+                Console.WriteLine($"--> Test document created: {testDocumentReadDto.Id}");
+
+                return CreatedAtRoute(nameof(GetTestDocumentById), new {Id = testDocumentReadDto.Id}, testDocumentReadDto);
+            }
+
+            return StatusCode(500);
         }
 
     }
