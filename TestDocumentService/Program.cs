@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TestDocumentService.Data;
 using TestDocumentService.Data.Context;
+using TestDocumentService.Data.DatabaseSeed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,5 +28,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+PrepDb.PrepPopulation(app);
 
 app.Run();
