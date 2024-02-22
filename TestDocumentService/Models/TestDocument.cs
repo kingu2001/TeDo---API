@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TestDocumentService.Models
 {
@@ -10,6 +11,7 @@ namespace TestDocumentService.Models
         [Required]
         public string? Introduction  { get; set; }
         [Required]
+        [NotMapped]
         public Dictionary<string, string>? DefinitionAndAbbreviations  { get; set; }
         [Required]
         public string? DocumentSupplied {get; set;}

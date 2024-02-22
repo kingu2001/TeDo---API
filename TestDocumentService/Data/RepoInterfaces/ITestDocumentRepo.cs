@@ -2,7 +2,7 @@ using TestDocumentService.Models;
 
 namespace TestDocumentService.Data.Interfaces
 {
-    interface ITestDocumentRepo
+    public interface ITestDocumentRepo
     {
         bool SaveChanges();
         IEnumerable<TestDocument> GetAllPTestDocument();

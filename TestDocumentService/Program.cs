@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using TestDocumentService.Data;
 using TestDocumentService.Data.Context;
 using TestDocumentService.Data.DatabaseSeed;
+using TestDocumentService.Data.Interfaces;
+using TestDocumentService.Data.Repositorys;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMem"));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+//Dependeny Injection
+builder.Services.AddScoped<ITestDocumentRepo, TestDocumentRepo>();
 
 var app = builder.Build();
 
