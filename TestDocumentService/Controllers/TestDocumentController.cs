@@ -25,6 +25,8 @@ namespace TestDocumentService.Controllers
         {
             var testDocumentItems =  _repo.GetAllTestDocument();
 
+            Console.WriteLine("--> Returning all entities");
+
             return Ok(_mapper.Map<IEnumerable<TestDocumentReadDto>>(testDocumentItems));
         }
         
