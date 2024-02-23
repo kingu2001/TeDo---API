@@ -14,7 +14,6 @@ namespace TestDocumentService.Models
         [Required]
         public string? FullAddress { get; set; }
         [Required]
-
         //Navigation props
         public List<PlaceOfTesting>? PlaceOfTestings { get; set; }   
         [Required]

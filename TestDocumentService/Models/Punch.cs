@@ -15,10 +15,10 @@ namespace TestDocumentService.Models
         public string? Owner { get; set; }
         [Required]
         public string? Action { get; set; }
-
         //Navigation props
         [Required]
         public TestDocument? TestDocument { get; set; }
+        public int TestId {get; set;}
         [Required]
         public Test? Test { get; set; }
     }
