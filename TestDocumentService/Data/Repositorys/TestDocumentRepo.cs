@@ -22,7 +22,7 @@ namespace TestDocumentService.Data.Repositorys
             _context.TestDocuments.Add(testDocument);
         }
 
-        public IEnumerable<TestDocument> GetAllPTestDocument()
+        public IEnumerable<TestDocument> GetAllTestDocument()
         {
             return _context.TestDocuments.ToList();
         }

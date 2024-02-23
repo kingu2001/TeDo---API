@@ -21,9 +21,9 @@ namespace TestDocumentService.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<TestDocumentReadDto>> GetAllPlatforms()
+        public ActionResult<IEnumerable<TestDocumentReadDto>> GetAllTestDocument()
         {
-            var testDocumentItems =  _repo.GetAllPTestDocument();
+            var testDocumentItems =  _repo.GetAllTestDocument();
 
             return Ok(_mapper.Map<IEnumerable<TestDocumentReadDto>>(testDocumentItems));
         }
