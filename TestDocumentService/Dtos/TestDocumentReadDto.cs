@@ -6,6 +6,7 @@ namespace TestDocumentService.Models
     {
         public int Id {get; set;}
         public string? Introduction  { get; set; }
+        public string? Name { get; set; }
         public Dictionary<string, string>? DefinitionAndAbbreviations  { get; set; }
         public string? DocumentSupplied {get; set;}
         public List<Punch>? PunchList { get; set; }

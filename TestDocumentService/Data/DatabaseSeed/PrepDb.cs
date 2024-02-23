@@ -33,11 +33,11 @@ namespace TestDocumentService.Data.DatabaseSeed
                 // Test test = new Test();
                 context.TestDocuments.AddRange
                 (
-                    new TestDocument() {Name = "Test1",Introduction = "This is testing off SPK1024", DefinitionAndAbbreviations = new Dictionary<string, string>(), 
+                    new TestDocument() {Name = "Test1", Introduction = "This is testing off SPK1024", DefinitionAndAbbreviations = new Dictionary<string, string>(), 
                                         DocumentSupplied = "PartList.txt", PunchList = new List<Punch>(), Revisions = new List<Revision>(), 
                                         PlacesOfTesting = new List<PlaceOfTesting>(), Tests = new List<Test>()}, 
 
-                    new TestDocument() {Name = "Test2" ,Introduction = "This is re-testing off the PU8012 pump", DefinitionAndAbbreviations = new Dictionary<string, string>(), 
+                    new TestDocument() {Name = "Test2", Introduction = "This is re-testing off the PU8012 pump", DefinitionAndAbbreviations = new Dictionary<string, string>(), 
                                         DocumentSupplied = "PartList.txt", PunchList = new List<Punch>(), Revisions = new List<Revision>(), 
                                         PlacesOfTesting = new List<PlaceOfTesting>(), Tests = new List<Test>()}
                 );

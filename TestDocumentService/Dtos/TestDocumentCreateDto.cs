@@ -7,6 +7,8 @@ namespace TestDocumentService.Models
         [Required]
         public string? Introduction  { get; set; }
         [Required]
+        public string? Name { get; set; }
+        [Required]
         public Dictionary<string, string>? DefinitionAndAbbreviations  { get; set; }
         public string? DocumentSupplied {get; set;}
         [Required]
