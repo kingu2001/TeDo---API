@@ -16,8 +16,12 @@ namespace TestDocumentService.Models
         [Required]
         public string? Description { get; set; }
         [Required]
-        public DateOnly Date { get; set; }       
+        public string? Date { get; set; }     
+
+        //Navigation properties
         [Required]
-        public TestDocument? TestDocument { get; set; }      
+        public int TestDocumentId { get; set; }
+        [Required]
+        public TestDocument TestDocument { get; set; }      
     }
 }

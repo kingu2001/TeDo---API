@@ -7,21 +7,20 @@ namespace TestDocumentService.Models
         [Key]
         [Required]
         public int Id { get; set; }
-        [Required]
         public string? Title { get; set; }
-        [Required]
         public string? TestProcedure  { get; set; }
-        [Required]
         public string? Description { get; set; }
-        [Required]
         public string? IATInitials  { get; set; }
-        [Required]
         public string? FATInitials  { get; set; }
-        [Required]
         public string? SATInitials   { get; set; }
-        [Required]
         public string? OATInitials   { get; set; }
-        [Required]
+
+        //Navigation properties
+        public int? PuchId { get; set; }
         public Punch? Punch { get; set; }
+
+        [Required]
+        public int TestDocumentId { get; set; }
+        public List<TestDocument> TestDocument { get; set; }
     }
 }

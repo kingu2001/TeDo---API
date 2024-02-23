@@ -12,10 +12,11 @@ namespace TestDocumentService.Models
         [Required]
         public string? Signature { get; set; }
         [Required]
-        public DateOnly Date { get; set; }
+        public string? Date { get; set; }
 
         //Navigation props
         [Required]
-        public Firm? Firm { get; set; }
+        public Firm Firm { get; set; }
+        public List<TestDocument>? TestDocuments { get; set;}
     }
 }

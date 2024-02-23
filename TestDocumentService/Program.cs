@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 var MyAllowPolicy = "_myAllowPolicy";
 builder.Services.AddCors(opt => opt.AddPolicy(name: MyAllowPolicy, policy =>
 {
-    policy.WithOrigins("https://google.com", "https://wowhead.com").AllowAnyMethod().AllowAnyHeader();
+    policy.WithOrigins("https://localhost:7080").AllowAnyMethod().AllowAnyHeader();
 }));
 
 // Add services to the container.
@@ -21,7 +21,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMemory"));
+ builder.Services.AddDbContext<AppDbContext>(options => options
+            .UseSqlServer(builder.Configuration.GetConnectionString("AppDbDontextConnectionString") ?? throw new InvalidOperationException("Connection string not found.")));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 //For testing ONLY!!

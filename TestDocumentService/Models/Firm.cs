@@ -9,14 +9,13 @@ namespace TestDocumentService.Models
         [Key]
         [Required]
         public int Id { get; set; }
-        [Required]
         public string? Name { get; set; }
-        [Required]
         public string? FullAddress { get; set; }
-        [Required]
+        
+        
         //Navigation props
-        public List<PlaceOfTesting>? PlaceOfTestings { get; set; }   
-        [Required]
+        public int? PlaceOfTestingId { get; set; }
+        public PlaceOfTesting? PlaceOfTesting { get; set; } 
         public List<Participant>? Participants { get; set; }  
     }
 }

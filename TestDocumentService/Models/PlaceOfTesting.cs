@@ -8,10 +8,12 @@ namespace TestDocumentService.Models
         [Required]
         public int Id {get; set;}
         [Required]
-        public Firm? Firm { get; set; }
-        [Required]
         public TestType TestType {get; set;}
+        
+        //Navigation
+        public List<TestDocument> TestDocuments { get; set; }
         [Required]
-        public TestDocument? TestDocument { get; set; }
+        public int FimId { get; set; }
+        public Firm Firm { get; set; }
     }
 }
