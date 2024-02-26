@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace TestDocumentService.Models
 {
@@ -11,9 +12,6 @@ namespace TestDocumentService.Models
         public string? Name { get; set; }
         public string? Introduction  { get; set; }
         public string? DocumentSupplied {get; set;}
-        [NotMapped]
-        public Dictionary<string, string>? DefinitionAndAbbreviations  { get; set; }
-    
         
         //Navigation propeties
         [Required]
@@ -28,5 +26,7 @@ namespace TestDocumentService.Models
 
         [Required]
         public List<PlaceOfTesting>? PlaceOfTestings { get; set; }
+        
+        public List<DefinitionAndAbbrevation>? DefinitionAndAbbrevation { get; set; }
     }
 }

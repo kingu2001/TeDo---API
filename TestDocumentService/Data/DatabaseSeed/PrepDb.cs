@@ -27,46 +27,51 @@ namespace TestDocumentService.Data.DatabaseSeed
             {
                 Console.WriteLine("--> Seeding data...");
 
+                //Adding new firm and participants
                 Firm firm = new Firm{Name = "Tipatek A/S", FullAddress = "XYZ Address"};
                 Participant participant = new Participant{Name = "Luke", Firm = firm, Date = DateOnly.FromDateTime(DateTime.Now).ToString(), Signature = "Testing signature"};
-                Dictionary<string, string> tempDictionary = new Dictionary<string, string>
-                {
-                    { "Key1", "Value1" },
-                    { "Key2", "Value2" }
-                    
-                };
                 
-                List<Participant> tempParcicipantList = new List<Participant>
-                {
-                    participant
-                };
+                //Filling list off participant with "participant" created
+                List<Participant> tempParcicipantList = new List<Participant>{participant};
+                
+                //Creating new definitionAndAbbrevation
+                DefinitionAndAbbrevation definitionAndAbbrevation1 = new DefinitionAndAbbrevation(){Definition = "Key1", Abbrevation = "Value1"};
+                DefinitionAndAbbrevation definitionAndAbbrevation2 = new DefinitionAndAbbrevation(){Definition = "Key2", Abbrevation = "Value2"};
 
-                context.TestDocuments.AddRange(
-                 new TestDocument()
+                //Creating new tesdocument
+                TestDocument testDocument1 = new TestDocument()
                 {
                     Name = "Test1",
                     Introduction = "This is testing off SPK1024",
-                    DefinitionAndAbbreviations = tempDictionary,
                     DocumentSupplied = "PartList.txt",
                     PunchList = new List<Punch>(),
                     Revisions = new List<Revision>(),
                     PlaceOfTestings = new List<PlaceOfTesting>(),
                     Tests = new List<Test>(),
-                    Participants = tempParcicipantList  // Assuming Participants is the navigation property in TestDocument
-                },
-                new TestDocument()
+                    Participants = tempParcicipantList,
+                    DefinitionAndAbbrevation = new List<DefinitionAndAbbrevation>()
+                };
+
+                //Adding definitionAndAbbrevation1 to testDocument1 
+                testDocument1.DefinitionAndAbbrevation.Add(definitionAndAbbrevation1);
+                
+                //Adding definitionAndAbbrevation2 to testDocument2
+                TestDocument testDocument2 = new TestDocument()
                 {
                     Name = "Test2",
                     Introduction = "This is re-testing off the PU8012 pump",
-                    DefinitionAndAbbreviations = tempDictionary,
                     DocumentSupplied = "PartList.txt",
                     PunchList = new List<Punch>(),
                     Revisions = new List<Revision>(),
                     PlaceOfTestings = new List<PlaceOfTesting>(),
                     Tests = new List<Test>(),
-                    Participants = tempParcicipantList
-                }
-            );
+                    Participants = tempParcicipantList,
+                    DefinitionAndAbbrevation = new List<DefinitionAndAbbrevation>()
+                };
+
+                testDocument2.DefinitionAndAbbrevation.Add(definitionAndAbbrevation2);
+
+                context.TestDocuments.AddRange();
                 
 
                 context.SaveChanges();

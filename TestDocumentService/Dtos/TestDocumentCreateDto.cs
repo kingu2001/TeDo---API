@@ -23,5 +23,7 @@ namespace TestDocumentService.Models
 
         [Required]
         public List<PlaceOfTesting>? PlaceOfTestings { get; set; }
+
+        public List<DefinitionAndAbbrevation>? DefinitionAndAbbrevation { get; set; }
     }
 }

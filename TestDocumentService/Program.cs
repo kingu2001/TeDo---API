@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
 using TestDocumentService.Data;
@@ -21,6 +22,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+//.AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
  builder.Services.AddDbContext<AppDbContext>(options => options
             .UseSqlServer(builder.Configuration.GetConnectionString("AppDbDontextConnectionString") ?? throw new InvalidOperationException("Connection string not found.")));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestDocumentService.Data.Context;
 
@@ -11,9 +12,11 @@ using TestDocumentService.Data.Context;
 namespace TestDocumentService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240223204922_UpatedNaviProp2")]
+    partial class UpatedNaviProp2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,30 +53,6 @@ namespace TestDocumentService.Migrations
                     b.HasIndex("TestDocumentsId");
 
                     b.ToTable("PlaceOfTestingTestDocument");
-                });
-
-            modelBuilder.Entity("TestDocumentService.DefinitionAndAbbrevation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Abbrevation")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Definition")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TestDocumentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TestDocumentId");
-
-                    b.ToTable("DefinitionAndAbbrevation");
                 });
 
             modelBuilder.Entity("TestDocumentService.Models.Firm", b =>
@@ -334,17 +313,6 @@ namespace TestDocumentService.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TestDocumentService.DefinitionAndAbbrevation", b =>
-                {
-                    b.HasOne("TestDocumentService.Models.TestDocument", "TestDocument")
-                        .WithMany("DefinitionAndAbbrevation")
-                        .HasForeignKey("TestDocumentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TestDocument");
-                });
-
             modelBuilder.Entity("TestDocumentService.Models.Firm", b =>
                 {
                     b.HasOne("TestDocumentService.Models.PlaceOfTesting", "PlaceOfTesting")
@@ -428,8 +396,6 @@ namespace TestDocumentService.Migrations
 
             modelBuilder.Entity("TestDocumentService.Models.TestDocument", b =>
                 {
-                    b.Navigation("DefinitionAndAbbrevation");
-
                     b.Navigation("PunchList");
 
                     b.Navigation("Revisions");

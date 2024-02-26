@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace TestDocumentService.Models
 {
@@ -17,6 +18,7 @@ namespace TestDocumentService.Models
         //Navigation props
         [Required]
         public Firm Firm { get; set; }
+        [JsonIgnore]
         public List<TestDocument>? TestDocuments { get; set;}
     }
 }
