@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using TestDocumentService.Models.Enums;
 
-namespace TestDocumentService.Models
+namespace TestDocumentService.Dtos
 {
-    public class Firm
+    public class FirmReadDto
     {
         [Key]
         [Required]
@@ -12,9 +12,5 @@ namespace TestDocumentService.Models
         public string? FullAddress { get; set; }
         public List<TestType>? TestTypes { get; set; }
 
-        //Navigation properties
-        public ICollection<Participant>? Participants { get; set; }
-        public ICollection<FirmTestDocument>? FirmTestDocuments { get; set; }
-        public ICollection<TestDocument>? TestDocuments { get; set; }
     }
 }

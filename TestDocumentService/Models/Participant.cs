@@ -1,24 +1,20 @@
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace TestDocumentService.Models
 {
-     public class Participant
+    public class Participant
     {
         [Key]
         [Required]
-        public int Id {get; set;}
-        [Required]
+        public int Id { get; set; }
         public string? Name { get; set; }    
-        [Required]
         public string? Signature { get; set; }
-        [Required]
-        public string? Date { get; set; }
+        public string? Date { get; set; }         
 
-        //Navigation props
-        [Required]
+        //Navigation properties
+        public ICollection<TestDocumentParticipant> TestDocumentParticipant { get; set; }
+        public ICollection<TestDocument> TestDocuments { get; set; }
+        public int FirmId { get; set; }
         public Firm Firm { get; set; }
-        [JsonIgnore]
-        public List<TestDocument>? TestDocuments { get; set;}
     }
 }

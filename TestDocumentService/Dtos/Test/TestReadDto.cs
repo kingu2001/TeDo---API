@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TestDocumentService.Models
+namespace TestDocumentService.Dtos
 {
-    public class Test
+    public class TestReadDto
     {
         [Key]
         [Required]
@@ -14,8 +14,5 @@ namespace TestDocumentService.Models
         public string? SATInitials { get; set; }
         public string? OATInitials { get; set; }
 
-        //Navigation properties
-        public int TestDocumentId { get; set; }
-        public TestDocument? TestDocument { get; set; }
     }
 }

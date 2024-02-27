@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TestDocumentService.Models
+namespace TestDocumentService.Dtos
 {
-    public class Punch
+    public class PunchReadDto
     {
         [Key]
         [Required]
@@ -11,12 +11,5 @@ namespace TestDocumentService.Models
         public string? Description { get; set; }
         public string? Owner { get; set; }
         public string? Action { get; set; }
-
-        //Navigation properties
-        public int TestId { get; set; }
-        public Test? Test { get; set; }
-
-        public int TestDocumentId { get; set; }
-        public TestDocument? TestDocument { get; set; }
     }
 }

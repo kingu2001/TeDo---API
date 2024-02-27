@@ -1,9 +1,9 @@
-namespace TestDocumentService.Models
+namespace TestDocumentService.Models.Enums
 {
     public enum TestType
     {
-        IAT,
         SAT,
+        IAT,
         FAT,
         OAT
     }

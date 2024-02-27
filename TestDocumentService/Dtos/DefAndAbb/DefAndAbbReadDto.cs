@@ -1,17 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TestDocumentService.Models
+namespace TestDocumentService.Dtos
 {
-    public class DefinitionAndAbbrevation
+    public class DefinitionAndAbbrevationReadDto
     {
         [Key]
         [Required]
         public int Id { get; set; }
         public string? Definition { get; set; }
         public string? Abbrevation { get; set; }
-
-        //Navigation properties
-        public int TestDocumentId { get; set; }
-        public TestDocument? TestDocument { get; set; }
     }
 }
