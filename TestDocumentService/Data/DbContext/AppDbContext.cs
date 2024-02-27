@@ -1,3 +1,4 @@
+using AutoMapper.Internal.Mappers;
 using Microsoft.EntityFrameworkCore;
 using TestDocumentService.Models;
 
@@ -35,7 +36,6 @@ namespace TestDocumentService.Data.Context
                 .HasOne(tp => tp.Participant)
                 .WithMany(p => p.TestDocumentParticipant)
                 .HasForeignKey(tp => tp.ParticipantId);
-                
         }
     }
 }

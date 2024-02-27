@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using TestDocumentService.Data.Interfaces;
+using TestDocumentService.Dtos;
 using TestDocumentService.Models;
 
 namespace TestDocumentService.Controllers
@@ -46,23 +47,23 @@ namespace TestDocumentService.Controllers
             return NotFound();
         }
 
-        [HttpPost]
-        public ActionResult<TestDocument> CreateTestDocument(TestDocumentCreateDto testDocumentCreateDto)
-        {
-            var testDocumentModel = _mapper.Map<TestDocument>(testDocumentCreateDto);
+        // [HttpPost]
+        // public ActionResult<TestDocument> CreateTestDocument(TestDocumentCreateDto testDocumentCreateDto)
+        // {
+        //     var testDocumentModel = _mapper.Map<TestDocument>(testDocumentCreateDto);
 
-            _repo.CreateTestDocument(testDocumentModel);
+        //     _repo.CreateTestDocument(testDocumentModel);
 
-            if(_repo.SaveChanges() != false)
-            {
-                var testDocumentReadDto = _mapper.Map<TestDocumentReadDto>(testDocumentModel);
+        //     if(_repo.SaveChanges() != false)
+        //     {
+        //         var testDocumentReadDto = _mapper.Map<TestDocumentReadDto>(testDocumentModel);
 
-                Console.WriteLine($"--> Test document created: {testDocumentReadDto.Id}");
+        //         Console.WriteLine($"--> Test document created: {testDocumentReadDto.Id}");
 
-                return CreatedAtRoute(nameof(GetTestDocumentById), new {id = testDocumentReadDto.Id}, testDocumentReadDto);
-            }
+        //         return CreatedAtRoute(nameof(GetTestDocumentById), new {id = testDocumentReadDto.Id}, testDocumentReadDto);
+        //     }
 
-            return StatusCode(500);
-        }
+        //     return StatusCode(500);
+        // }
     }
 }

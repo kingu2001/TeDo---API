@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using TestDocumentService.Models.Enums;
 
 namespace TestDocumentService.Models
 {
@@ -10,7 +9,10 @@ namespace TestDocumentService.Models
         public int Id { get; set; } 
         public string? Name { get; set; }
         public string? FullAddress { get; set; }
-        public List<TestType>? TestTypes { get; set; }
+        public bool SAT { get; set; }
+        public bool IAT { get; set; }
+        public bool OAT { get; set; }
+        public bool FAT { get; set; }
 
         //Navigation properties
         public ICollection<Participant>? Participants { get; set; }
