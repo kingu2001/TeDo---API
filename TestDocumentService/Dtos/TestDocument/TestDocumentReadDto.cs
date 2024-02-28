@@ -12,6 +12,7 @@ namespace TestDocumentService.Dtos
         public string? Introduction { get; set; }
         public string? DocumentSupplied { get; set; }
 
+        //Navigation Properties
         public ICollection<PunchReadDto> PunchDtos{ get; set; }
         public ICollection<ParticipantReadDto>? ParticipantDtos { get; set; }
         public ICollection<DefinitionAndAbbrevationReadDto>? DefinitionAndAbbrevationDtos { get; set; }

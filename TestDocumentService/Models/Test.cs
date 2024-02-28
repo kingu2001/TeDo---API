@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace TestDocumentService.Models
 {
@@ -15,7 +16,8 @@ namespace TestDocumentService.Models
         public string? OATInitials { get; set; }
 
         //Navigation properties
-        public int TestDocumentId { get; set; }
+        public int? TestDocumentId { get; set; }
         public TestDocument? TestDocument { get; set; }
+        public ICollection<Punch>? Punches { get; set; }
     }
 }

@@ -16,7 +16,6 @@ namespace TestDocumentService.Models
 
         //Navigation properties
         public ICollection<Participant>? Participants { get; set; }
-        public ICollection<FirmTestDocument>? FirmTestDocuments { get; set; }
         public ICollection<TestDocument>? TestDocuments { get; set; }
     }
 }

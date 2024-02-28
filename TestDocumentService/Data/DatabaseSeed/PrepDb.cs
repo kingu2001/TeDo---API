@@ -53,6 +53,7 @@ namespace TestDocumentService.Data.DatabaseSeed
                 //Adding definitionAndAbbrevation1 to testDocument1 
                 testDocument1.DefinitionAndAbbrevations.Add(definitionAndAbbrevation1);
                 testDocument1.Participants.Add(participant);
+                testDocument1.Firms.Add(firm);
 
                 //Adding definitionAndAbbrevation2 to testDocument2
                 TestDocument testDocument2 = new TestDocument()
@@ -67,6 +68,11 @@ namespace TestDocumentService.Data.DatabaseSeed
                     Participants = new List<Participant>(),
                     DefinitionAndAbbrevations = new List<DefinitionAndAbbrevation>()
                 };
+                
+                testDocument2.DefinitionAndAbbrevations.Add(definitionAndAbbrevation2);
+                testDocument2.Participants.Add(participant);
+                testDocument2.Firms.Add(firm);
+
 
                 context.TestDocuments.AddRange(testDocument2, testDocument1);
                 

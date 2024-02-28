@@ -17,6 +17,6 @@ namespace TestDocumentService.Models
         public Test? Test { get; set; }
 
         public int TestDocumentId { get; set; }
-        public TestDocument? TestDocument { get; set; }
+        public TestDocument TestDocument { get; set; }
     }
 }

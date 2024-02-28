@@ -26,7 +26,14 @@ namespace TestDocumentService.Data.Repositorys
         public IEnumerable<TestDocument> GetAllTestDocument()
         {
 
-            return _context.TestDocuments.ToList();
+            return _context.TestDocuments
+                    .Include(t => t.DefinitionAndAbbrevations)
+                    .Include(t => t.Firms)
+                    .Include(t => t.Punches)
+                    .Include(t => t.Participants)
+                    .Include(t => t.Tests)
+                    .Include(t => t.Revisions)
+                    .ToList();
 		}
 
         public TestDocument GetTestDocumentById(int id)

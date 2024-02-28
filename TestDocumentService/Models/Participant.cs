@@ -12,7 +12,6 @@ namespace TestDocumentService.Models
         public string? Date { get; set; }         
 
         //Navigation properties
-        public ICollection<TestDocumentParticipant> TestDocumentParticipant { get; set; }
         public ICollection<TestDocument> TestDocuments { get; set; }
         public int FirmId { get; set; }
         public Firm Firm { get; set; }
