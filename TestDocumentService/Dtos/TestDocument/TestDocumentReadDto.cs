@@ -13,11 +13,11 @@ namespace TestDocumentService.Dtos
         public string? DocumentSupplied { get; set; }
 
         //Navigation Properties
-        public ICollection<PunchReadDto> PunchDtos{ get; set; }
-        public ICollection<ParticipantReadDto>? ParticipantDtos { get; set; }
-        public ICollection<DefinitionAndAbbrevationReadDto>? DefinitionAndAbbrevationDtos { get; set; }
-        public ICollection<RevisionReadDto>? RevisionDtos { get; set; }
-        public ICollection<TestReadDto> TestDtos { get; set; }
-        public ICollection<FirmReadDto> FirmDtos { get; set; } 
+        public ICollection<PunchReadDto> Punches{ get; set; }
+        public ICollection<ParticipantReadDto>? Participants { get; set; }
+        public ICollection<DefinitionAndAbbrevationReadDto>? DefinitionAndAbbrevations { get; set; }
+        public ICollection<RevisionReadDto>? Revisions { get; set; }
+        public ICollection<TestReadDto> Tests { get; set; }
+        public ICollection<FirmReadDto> Firms { get; set; } 
     }
 }

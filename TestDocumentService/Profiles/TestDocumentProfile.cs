@@ -9,12 +9,12 @@ namespace TestDocumentService.Profiles
         public TestDocumentProfile()
         {
             CreateMap<TestDocument, TestDocumentReadDto>()
-            .ForMember(dest => dest.FirmDtos, opt => opt.MapFrom(src => src.Firms))
-            .ForMember(dest => dest.ParticipantDtos, opt => opt.MapFrom(src => src.Participants))
-            .ForMember(dest => dest.RevisionDtos, opt => opt.MapFrom(src => src.Revisions))
-            .ForMember(dest => dest.PunchDtos, opt => opt.MapFrom(src => src.Punches))
-            .ForMember(dest => dest.TestDtos, opt => opt.MapFrom(src => src.Tests))
-            .ForMember(dest => dest.DefinitionAndAbbrevationDtos, opt => opt.MapFrom(src => src.DefinitionAndAbbrevations));
+            .ForMember(dest => dest.Firms, opt => opt.MapFrom(src => src.Firms))
+            .ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.Participants))
+            .ForMember(dest => dest.Revisions, opt => opt.MapFrom(src => src.Revisions))
+            .ForMember(dest => dest.Punches, opt => opt.MapFrom(src => src.Punches))
+            .ForMember(dest => dest.Tests, opt => opt.MapFrom(src => src.Tests))
+            .ForMember(dest => dest.DefinitionAndAbbrevations, opt => opt.MapFrom(src => src.DefinitionAndAbbrevations));
         }
     }
 
