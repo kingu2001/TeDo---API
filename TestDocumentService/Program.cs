@@ -1,7 +1,4 @@
-using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Any;
-using TestDocumentService.Data;
 using TestDocumentService.Data.Context;
 using TestDocumentService.Data.DatabaseSeed;
 using TestDocumentService.Data.Interfaces;
@@ -12,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 var MyAllowPolicy = "_myAllowPolicy";
 builder.Services.AddCors(opt => opt.AddPolicy(name: MyAllowPolicy, policy =>
 {
-    policy.WithOrigins("https://localhost:7080").AllowAnyMethod().AllowAnyHeader();
+    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
 }));
 
 // Add services to the container.

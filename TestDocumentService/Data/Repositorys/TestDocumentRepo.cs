@@ -33,6 +33,7 @@ namespace TestDocumentService.Data.Repositorys
                     .Include(t => t.Participants)
                     .Include(t => t.Tests)
                     .Include(t => t.Revisions)
+                    .AsSplitQuery()
                     .ToList();
 		}
 
