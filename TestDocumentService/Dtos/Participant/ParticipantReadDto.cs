@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using TestDocumentService.Models;
 
 namespace TestDocumentService.Dtos
 {
@@ -9,7 +10,6 @@ namespace TestDocumentService.Dtos
         public int Id { get; set; }
         public string? Name { get; set; }    
         public string? Signature { get; set; }
-        public string? Date { get; set; }         
-
+        public string? Date { get; set; }
     }
 }
