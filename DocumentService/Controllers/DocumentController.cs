@@ -14,14 +14,13 @@ namespace DocumentService.Controllers
         {
             _repo = documentRepo;
         }
-        [Route("/api/Document/{id}")]
-        [HttpGet]
-        public async Task<FileContentResult> GetDocumentsById(int id)
+        [HttpGet("{id}", Name = "GetDocumentById")]
+        public async Task<IActionResult> GetDocumentById(int id)
         {
             var retrivedDocument = await _repo.GetDocumentById(id);
             if(retrivedDocument == null)
             {
-                throw new ArgumentNullException(nameof(retrivedDocument));
+                return NotFound($"--> No entry with the supplied id exists");
             }
             Console.WriteLine($"--> Returning File: {retrivedDocument.FileName}");
             return File(retrivedDocument.FileContent, retrivedDocument.ContentType, retrivedDocument.FileName);
@@ -37,6 +36,40 @@ namespace DocumentService.Controllers
                 return NotFound("--> The database is empty");
             }
             return Ok(retrivedDocuments);
+        }
+
+        [HttpPost("{id}")]
+        public async Task<ActionResult<Document>> UpdateDocumentById(int id)
+        {
+            if (!Request.HasFormContentType)
+            {
+                return BadRequest("Expected a form data request");
+            }
+            
+            var form = await Request.ReadFormAsync();
+            var file = form.Files.FirstOrDefault();
+
+            if(file == null)
+            {
+                return BadRequest("No file uploaded");
+            }
+
+            var updatedDocument = new Document
+            {
+                FileName = file.FileName,
+                ContentType = file.ContentType,
+                FileContent = await ReadFileContentAsync(file.OpenReadStream())
+            };
+
+            var result = _repo.UpdateDocument(updatedDocument, id);
+            if(!result)
+            {
+                Console.WriteLine("--> Nothing to update");
+                return NotFound("--> Nothing to update");
+            }
+            
+            Console.WriteLine($"--> Document updated successfully: {updatedDocument.FileName}");
+            return Ok($"Document updated successfully: {updatedDocument.FileName}");
         }
 
         [HttpPost]
@@ -66,7 +99,7 @@ namespace DocumentService.Controllers
             
             Console.WriteLine($"--> File uploaded succesfully: {uploadFile.FileName}");
 
-            return Ok($"File was uploaded succesfully with file name: {uploadFile.FileName}");
+            return CreatedAtRoute(nameof(GetDocumentById), new {id = uploadFile.Id}, uploadFile);
         }
         private async Task<byte[]> ReadFileContentAsync(Stream stream)
         {

@@ -20,10 +20,6 @@ namespace DocumentService.Data
         public async Task<Document> GetDocumentById(int id)
         {
             var result = await _documentDbContext.Documents.FirstOrDefaultAsync(d => id == d.Id);
-            if(result == null)
-            {
-                throw new ArgumentNullException(nameof(result));
-            }
             return result;
         }
 
@@ -37,6 +33,23 @@ namespace DocumentService.Data
         {
             var result =  await _documentDbContext.Documents.ToListAsync();
             return result;
+        }
+
+        public bool UpdateDocument(Document document, int id)
+        {
+            //Returns number off affected rows
+            var result = _documentDbContext.Documents
+                            .Where(d => d.Id == id)
+                            .ExecuteUpdate(setters => setters
+                                    .SetProperty(b => b.FileContent, document.FileContent)
+                                    .SetProperty(b => b.FileName, document.FileName));
+            if(result > 0)
+            {
+                return true;
+            }
+            {
+                return false;
+            }
         }
     }
 }
