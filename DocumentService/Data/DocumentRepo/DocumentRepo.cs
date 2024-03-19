@@ -17,9 +17,9 @@ namespace DocumentService.Data
             return _documentDbContext.SaveChanges() >= 0;
         }
 
-        public Document GetDocumentById(int id)
+        public async Task<Document> GetDocumentById(int id)
         {
-            var result =_documentDbContext.Documents.FirstOrDefault(d => id == d.Id);
+            var result = await _documentDbContext.Documents.FirstOrDefaultAsync(d => id == d.Id);
             if(result == null)
             {
                 throw new ArgumentNullException(nameof(result));
@@ -35,7 +35,7 @@ namespace DocumentService.Data
 
         public async Task<IEnumerable<Document>> GetAllDocuments()
         {
-            var result = await _documentDbContext.Documents.ToListAsync();
+            var result =  await _documentDbContext.Documents.ToListAsync();
             return result;
         }
     }

@@ -1,5 +1,4 @@
-﻿using System.Net;
-using DocumentService.Data;
+﻿using DocumentService.Data;
 using DocumentService.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,16 +14,29 @@ namespace DocumentService.Controllers
         {
             _repo = documentRepo;
         }
-
-        //MISSING IMPLEMENTATION
+        [Route("/api/Document/{id}")]
         [HttpGet]
-        public async Task<ActionResult<Document>> GetAllDocuments()
+        public async Task<FileContentResult> GetDocumentsById(int id)
         {
-            var documentList = await _repo.GetAllDocuments();
-            var document = documentList.FirstOrDefault();
+            var retrivedDocument = await _repo.GetDocumentById(id);
+            if(retrivedDocument == null)
+            {
+                throw new ArgumentNullException(nameof(retrivedDocument));
+            }
+            Console.WriteLine($"--> Returning File: {retrivedDocument.FileName}");
+            return File(retrivedDocument.FileContent, retrivedDocument.ContentType, retrivedDocument.FileName);
+        }
 
-            var respone = new HttpResponseMessage(HttpStatusCode.OK);
-
+        [HttpGet]
+        [Route("/api/Document/GetAllDocumentInformation")]
+        public async Task<ActionResult<Document>> GetAllDocumentInformation()
+        {
+            var retrivedDocuments = await _repo.GetAllDocuments();
+            if(retrivedDocuments == null)
+            {
+                return NotFound("--> The database is empty");
+            }
+            return Ok(retrivedDocuments);
         }
 
         [HttpPost]
@@ -43,16 +55,18 @@ namespace DocumentService.Controllers
                 return BadRequest("No file uploaded");
             }
 
-            var uploadedFile = new Document
+            var uploadFile = new Document
             {
                 FileName = file.FileName,
                 ContentType = file.ContentType,
                 FileContent = await ReadFileContentAsync(file.OpenReadStream())
             };
 
-            _repo.UploadDocumentToDb(uploadedFile);
+            _repo.UploadDocumentToDb(uploadFile);
             
-            return Ok(nameof(uploadedFile));
+            Console.WriteLine($"--> File uploaded succesfully: {uploadFile.FileName}");
+
+            return Ok($"File was uploaded succesfully with file name: {uploadFile.FileName}");
         }
         private async Task<byte[]> ReadFileContentAsync(Stream stream)
         {
