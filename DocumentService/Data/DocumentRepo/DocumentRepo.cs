@@ -51,5 +51,21 @@ namespace DocumentService.Data
                 return false;
             }
         }
+
+        public async Task<bool> DeleteDocumentById(int id)
+        {
+            var foundDocument = await GetDocumentById(id);
+
+            if(foundDocument != null)
+            {
+                _documentDbContext.Documents.Remove(foundDocument);
+                SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

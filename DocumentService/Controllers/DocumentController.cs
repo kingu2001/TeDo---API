@@ -101,6 +101,19 @@ namespace DocumentService.Controllers
 
             return CreatedAtRoute(nameof(GetDocumentById), new {id = uploadFile.Id}, uploadFile);
         }
+
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteDocumentById(int id)
+        {
+            if(await _repo.DeleteDocumentById(id))
+            {
+                return Ok("--> Document was deleted successfully");
+            }
+
+            return NotFound($"--> Document with id {id} was not found");
+
+        }
         private async Task<byte[]> ReadFileContentAsync(Stream stream)
         {
             using (var memoryStream = new MemoryStream())

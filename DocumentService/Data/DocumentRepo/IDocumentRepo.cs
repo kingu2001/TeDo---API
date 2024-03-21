@@ -8,6 +8,7 @@ namespace DocumentService.Data
         Task<IEnumerable<Document>> GetAllDocuments();
         Task<Document> GetDocumentById(int id);
         bool UpdateDocument(Document document, int id);
+        Task<bool> DeleteDocumentById(int id);
         void UploadDocumentToDb(Document document);
 
     }
