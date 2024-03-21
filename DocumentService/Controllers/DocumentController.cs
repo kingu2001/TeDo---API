@@ -14,6 +14,7 @@ namespace DocumentService.Controllers
         {
             _repo = documentRepo;
         }
+
         [HttpGet("{id}", Name = "GetDocumentById")]
         public async Task<IActionResult> GetDocumentById(int id)
         {
@@ -23,7 +24,7 @@ namespace DocumentService.Controllers
                 return NotFound($"--> No entry with the supplied id exists");
             }
             Console.WriteLine($"--> Returning File: {retrivedDocument.FileName}");
-            return File(retrivedDocument.FileContent, retrivedDocument.ContentType, retrivedDocument.FileName);
+            return File(retrivedDocument.FileContent, retrivedDocument.ContentType, retrivedDocument.FileName, true);
         }
 
         [HttpGet]
