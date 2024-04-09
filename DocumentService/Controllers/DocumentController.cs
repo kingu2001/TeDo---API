@@ -24,7 +24,8 @@ namespace DocumentService.Controllers
                 return NotFound($"--> No entry with the supplied id exists");
             }
             Console.WriteLine($"--> Returning File: {retrivedDocument.FileName}");
-            return File(retrivedDocument.FileContent, retrivedDocument.ContentType, retrivedDocument.FileName, true);
+            //return File(retrivedDocument.FileContent, retrivedDocument.ContentType, retrivedDocument.FileName, true);
+            return Ok(retrivedDocument);
         }
 
         [HttpGet]
@@ -74,7 +75,8 @@ namespace DocumentService.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Document>> UploadFile()
+        [Route("/api/Document/UploadFileFormData")]
+        public async Task<ActionResult<Document>> UploadFileFormData()
         {
             if (!Request.HasFormContentType)
             {
@@ -95,12 +97,27 @@ namespace DocumentService.Controllers
                 ContentType = file.ContentType,
                 FileContent = await ReadFileContentAsync(file.OpenReadStream())
             };
-
+            
             _repo.UploadDocumentToDb(uploadFile);
             
             Console.WriteLine($"--> File uploaded succesfully: {uploadFile.FileName}");
 
             return CreatedAtRoute(nameof(GetDocumentById), new {id = uploadFile.Id}, uploadFile);
+        }
+
+        [HttpPost]
+        [Route("/api/Document/UploadFileJson")]
+        public async Task<ActionResult<Document>> UploadFileJson(Document document)
+        {
+            if(document == null)
+            {
+                return BadRequest("Missing JSON body is empty"); 
+            }
+            _repo.UploadDocumentToDb(document);
+
+            Console.WriteLine($"--> File uploaded succesfully: {document.FileName}");
+
+            return CreatedAtRoute(nameof(GetDocumentById), new {id = document.Id}, document);
         }
 
 
