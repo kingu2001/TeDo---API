@@ -1,0 +1,6 @@
+@PunchService_HostAddress = http://localhost:5053
+
+GET {{PunchService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
