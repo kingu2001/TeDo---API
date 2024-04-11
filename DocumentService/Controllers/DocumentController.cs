@@ -24,6 +24,8 @@ namespace DocumentService.Controllers
                 return NotFound($"--> No entry with the supplied id exists");
             }
             Console.WriteLine($"--> Returning File: {retrivedDocument.FileName}");
+
+            // Uncomment bellow line to return as file and not JSON
             //return File(retrivedDocument.FileContent, retrivedDocument.ContentType, retrivedDocument.FileName, true);
             return Ok(retrivedDocument);
         }
@@ -107,7 +109,7 @@ namespace DocumentService.Controllers
 
         [HttpPost]
         [Route("/api/Document/UploadFileJson")]
-        public async Task<ActionResult<Document>> UploadFileJson(Document document)
+        public ActionResult<Document> UploadFileJson(Document document)
         {
             if(document == null)
             {
