@@ -1,5 +1,4 @@
-﻿
-namespace PunchService.Model;
+﻿namespace PunchService.Model;
 
 
 public class Document

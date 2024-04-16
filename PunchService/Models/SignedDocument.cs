@@ -1,6 +1,4 @@
-using FileService;
-
-namespace DocumentService.Models;
+namespace PunchService.Model;
 
 public class SignedDocument : Document
 {
@@ -9,6 +7,6 @@ public class SignedDocument : Document
 
 
     // Navigation propterties
-    public List<Punch>? MyProperty { get; set; }
+    public List<Punch>? Punches { get; set; }
 
 }
