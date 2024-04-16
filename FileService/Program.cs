@@ -8,8 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-builder.Services.AddDbContext<DocumentDbContext>(options => options
-.UseSqlServer(builder.Configuration.GetConnectionString("DocumentDbDontextConnectionString") ?? throw new InvalidOperationException("Connection string not found.")));
+builder.Services.AddDbContext<FileDbContext>(options => options
+.UseSqlServer(builder.Configuration.GetConnectionString("FileDbDontextConnectionString") ?? throw new InvalidOperationException("Connection string not found.")));
 
 builder.Services.AddScoped<IDocumentRepo, DocumentRepo>();
 

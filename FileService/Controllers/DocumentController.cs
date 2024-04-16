@@ -26,8 +26,8 @@ namespace DocumentService.Controllers
             Console.WriteLine($"--> Returning File: {retrivedDocument.FileName}");
 
             // Uncomment bellow line to return as file and not JSON
-            //return File(retrivedDocument.FileContent, retrivedDocument.ContentType, retrivedDocument.FileName, true);
-            return Ok(retrivedDocument);
+            return File(retrivedDocument.FileContent, retrivedDocument.ContentType, retrivedDocument.FileName, true);
+            //return Ok(retrivedDocument);
         }
 
         [HttpGet]

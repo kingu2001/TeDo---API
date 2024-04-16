@@ -5,40 +5,40 @@ namespace DocumentService.Data
 {
     public class DocumentRepo : IDocumentRepo
     {
-        private readonly DocumentDbContext _documentDbContext;
+        private readonly FileDbContext _fileDbContext;
 
-        public DocumentRepo(DocumentDbContext documentDbContext)
+        public DocumentRepo(FileDbContext documentDbContext)
         {
-            _documentDbContext = documentDbContext;
+            _fileDbContext = documentDbContext;
         }
 
         public bool SaveChanges()
         {
-            return _documentDbContext.SaveChanges() >= 0;
+            return _fileDbContext.SaveChanges() >= 0;
         }
 
         public async Task<Document> GetDocumentById(int id)
         {
-            var result = await _documentDbContext.Documents.FirstOrDefaultAsync(d => id == d.Id);
+            var result = await _fileDbContext.Documents.FirstOrDefaultAsync(d => id == d.Id);
             return result;
         }
 
         public void UploadDocumentToDb(Document document)
         {
-            _documentDbContext.Add(document);
+            _fileDbContext.Add(document);
             SaveChanges();
         }
 
         public async Task<IEnumerable<Document>> GetAllDocuments()
         {
-            var result =  await _documentDbContext.Documents.ToListAsync();
+            var result =  await _fileDbContext.Documents.ToListAsync();
             return result;
         }
 
         public bool UpdateDocument(Document document, int id)
         {
             //Returns number off affected rows
-            var result = _documentDbContext.Documents
+            var result = _fileDbContext.Documents
                             .Where(d => d.Id == id)
                             .ExecuteUpdate(setters => setters
                                     .SetProperty(b => b.FileContent, document.FileContent)
@@ -58,7 +58,7 @@ namespace DocumentService.Data
 
             if(foundDocument != null)
             {
-                _documentDbContext.Documents.Remove(foundDocument);
+                _fileDbContext.Documents.Remove(foundDocument);
                 SaveChanges();
                 return true;
             }
