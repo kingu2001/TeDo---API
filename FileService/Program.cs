@@ -1,4 +1,5 @@
 using DocumentService.Data;
+using FileService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddDbContext<FileDbContext>(options => options
 .UseSqlServer(builder.Configuration.GetConnectionString("FileDbDontextConnectionString") ?? throw new InvalidOperationException("Connection string not found.")));
 
 builder.Services.AddScoped<IDocumentRepo, DocumentRepo>();
+builder.Services.AddScoped<ISignedDocumentRepo, SignedDocumentRepo>();
 
 var app = builder.Build();
 

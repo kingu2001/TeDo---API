@@ -115,11 +115,19 @@ namespace DocumentService.Controllers
             {
                 return BadRequest("Missing JSON body is empty"); 
             }
-            _repo.UploadDocumentToDb(document);
+            var dbSaveResult = _repo.UploadDocumentToDb(document);
 
-            Console.WriteLine($"--> File uploaded succesfully: {document.FileName}");
 
-            return CreatedAtRoute(nameof(GetDocumentById), new {id = document.Id}, document);
+            if(dbSaveResult)
+            {
+                Console.WriteLine($"--> File uploaded succesfully: {document.FileName}");
+                return CreatedAtRoute(nameof(GetDocumentById), new {id = document.Id}, document);
+            }
+            else
+            {
+                Console.WriteLine("--> File upload failed... Check repository logs for errors");
+                return StatusCode(500, "Upload failed... Check server logs for erros");
+            }
         }
 
 

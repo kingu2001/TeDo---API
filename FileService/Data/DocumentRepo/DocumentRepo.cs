@@ -7,9 +7,9 @@ namespace DocumentService.Data
     {
         private readonly FileDbContext _fileDbContext;
 
-        public DocumentRepo(FileDbContext documentDbContext)
+        public DocumentRepo(FileDbContext fileDbContext)
         {
-            _fileDbContext = documentDbContext;
+            _fileDbContext = fileDbContext;
         }
 
         public bool SaveChanges()
@@ -23,10 +23,10 @@ namespace DocumentService.Data
             return result;
         }
 
-        public void UploadDocumentToDb(Document document)
+        public bool UploadDocumentToDb(Document document)
         {
             _fileDbContext.Add(document);
-            SaveChanges();
+            return SaveChanges();
         }
 
         public async Task<IEnumerable<Document>> GetAllDocuments()
