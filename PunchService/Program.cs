@@ -11,7 +11,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<PunchDbContext>(options => options
 .UseSqlServer(builder.Configuration.GetConnectionString("FileDbDontextConnectionString") ?? throw new InvalidOperationException("Connection string not found.")));
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
