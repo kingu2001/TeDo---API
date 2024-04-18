@@ -1,5 +1,6 @@
 ﻿using DocumentService.Models;
 using FileService;
+using FileService.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DocumentService.Data
@@ -13,6 +14,7 @@ namespace DocumentService.Data
         public DbSet<Punch> Punches { get; set; }
         public DbSet<Stamp> Stamps { get; set; }
         public DbSet<Revision> Revisions { get; set; }
+        public DbSet<Certificate> Certificates { get; set; }
     }
 }
 
