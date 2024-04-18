@@ -1,0 +1,6 @@
+@SignedDocumentService_HostAddress = http://localhost:5079
+
+GET {{SignedDocumentService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
