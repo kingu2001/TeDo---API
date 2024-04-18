@@ -1,19 +1,14 @@
 using Microsoft.EntityFrameworkCore;
-using PunchService;
-using PunchService.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-
-builder.Services.AddScoped<IPunchRepo, PunchRepo>();
-
-builder.Services.AddDbContext<PunchDbContext>(options => options
-.UseSqlServer(builder.Configuration.GetConnectionString("FileDbDontextConnectionString") ?? throw new InvalidOperationException("Connection string not found.")));
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -24,8 +19,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
+app.MapControllers();
+app.UseHttpsRedirection();
 
 app.Run();
-
-

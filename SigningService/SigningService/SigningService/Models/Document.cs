@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
-namespace PunchService;
+namespace SigningService.Models;
 
 public class Document
 {
