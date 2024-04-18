@@ -12,6 +12,7 @@ public class Punch
     public string  Description { get; set; }
     public string Owner { get; set; }
     public string Action { get; set; }
+    public int SignedDocumentId { get; set; }
 
     // Navigation propterties
     public SignedDocument SignedDocument { get; set; }
