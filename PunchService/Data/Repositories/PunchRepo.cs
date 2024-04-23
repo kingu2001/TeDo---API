@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using PunchService.Data;
 using PunchService.Model;
 
@@ -14,7 +13,7 @@ public class PunchRepo : IPunchRepo
         _context = context;
     }
 
-    public bool AddPunch(Punch punch, int signedDocumentId)
+    public async Task<bool> AddPunchAsync(Punch punch, int signedDocumentId)
     {
         if (punch == null)
         {
@@ -23,52 +22,49 @@ public class PunchRepo : IPunchRepo
         punch.SignedDocumentId = signedDocumentId;
         _context.Punches.Add(punch);
 
-        return SaveChanges();
+        return await SaveChangesAsync();
     }
 
-    public bool DeletePunchAsync(int punchId, int signedDocumentId)
+    public async Task<bool> DeletePunchAsync(int punchId, int signedDocumentId)
     {
-        var punch = _context.Punches.FirstOrDefault(p => p.SignedDocumentId == signedDocumentId && p.Id == punchId);
-        if (punch != null)
-        {
-            _context.Punches.Remove(punch);
-            return SaveChanges();
-        }
-        return false;
+        var punch = await _context.Punches.FirstOrDefaultAsync(p => p.SignedDocumentId == signedDocumentId && p.Id == punchId);
+        _context.Punches.Remove(punch);
+        return await SaveChangesAsync();
     }
 
-    public IEnumerable<Punch> GetPunchesForSignedDocument(int signedDocumentId)
+    public async Task<IEnumerable<Punch>> GetPunchesForSignedDocumentAsync(int signedDocumentId)
     {
-        return _context.Punches
+        return await _context.Punches
                 .Where(p => p.SignedDocumentId == signedDocumentId)
-                .OrderBy(p => p.SignedDocument.FileName);
+                .OrderBy(p => p.SignedDocument.FileName).ToListAsync();
     }
 
-    public Punch GetPunch(int punchId, int signedDocumentId)
+    public async Task<Punch> GetPunchAsync(int punchId, int signedDocumentId)
     {
-        return _context.Punches
-                .Where(p => p.SignedDocumentId == signedDocumentId && p.Id == punchId).FirstOrDefault();
+        return await _context.Punches
+                .Where(p => p.SignedDocumentId == signedDocumentId && p.Id == punchId).FirstOrDefaultAsync();
     }
 
-    public bool UpdatePunch(Punch newPunch, int punchId, int signedDocumentId)
+    public async Task<bool> UpdatePunchAsync(Punch punch, int punchId, int signedDocumentId)
     {
-        if (newPunch != null)
+        if (punch == null)
         {
-            _context.Punches.Where(p => p.SignedDocumentId == signedDocumentId && p.Id == punchId)
-                 .ExecuteUpdate(setters => setters
-                 .SetProperty(p => p.Owner, newPunch.Owner)
-                 .SetProperty(p => p.SignedDocument, newPunch.SignedDocument)
-                 .SetProperty(p => p.PunchNumber, newPunch.PunchNumber)
-                 .SetProperty(p => p.Action, newPunch.Action)
-                 .SetProperty(p => p.Description, newPunch.Description));
-
-            return SaveChanges();
+            throw new ArgumentNullException(nameof(punch));
         }
-        return false;
+
+        await _context.Punches.Where(p => p.SignedDocumentId == signedDocumentId && p.Id == punchId)
+             .ExecuteUpdateAsync(setters => setters
+             .SetProperty(p => p.Owner, punch.Owner)
+             .SetProperty(p => p.SignedDocument, punch.SignedDocument)
+             .SetProperty(p => p.PunchNumber, punch.PunchNumber)
+             .SetProperty(p => p.Action, punch.Action)
+             .SetProperty(p => p.Description, punch.Description));
+
+        return await SaveChangesAsync();
     }
 
-    public bool SaveChanges()
+    public async Task<bool> SaveChangesAsync()
     {
-        return _context.SaveChanges() >= 0;
+        return await _context.SaveChangesAsync() >= 0;
     }
 }

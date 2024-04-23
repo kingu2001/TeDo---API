@@ -4,10 +4,10 @@ namespace PunchService;
 
 public interface IPunchRepo
 {
-    bool SaveChanges();
-    Punch GetPunch(int punchId, int signedDocumentId);
-    IEnumerable<Punch> GetPunchesForSignedDocument(int signedDocumentId);
-    bool AddPunch(Punch punch, int signedDocumentId);
-    bool UpdatePunch(Punch newPunch, int punchId, int signedDocumentId);
-    bool DeletePunchAsync(int punchId, int signedDocumentId);
+    Task<bool> SaveChangesAsync();
+    Task<Punch> GetPunchAsync(int punchId, int signedDocumentId);
+    Task<IEnumerable<Punch>> GetPunchesForSignedDocumentAsync(int signedDocumentId);
+    Task<bool> AddPunchAsync(Punch punch, int signedDocumentId);
+    Task<bool> UpdatePunchAsync(Punch punch, int punchId, int signedDocumentId);
+    Task<bool> DeletePunchAsync(int punchId, int signedDocumentId);
 }
