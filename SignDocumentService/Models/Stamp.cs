@@ -8,7 +8,5 @@
         public string Date { get; set; }
         public string SigneeName { get; set; }
         public int StampIdentity { get; set; }
-        //navigation property
-        public SignedDocument SignedDocument { get; set; }
     }
 }

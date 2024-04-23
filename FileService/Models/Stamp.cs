@@ -1,16 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using DocumentService.Models;
 
 namespace FileService;
 
 public class Stamp
 {
     [Key]
-    public int Id { get; set; } 
+    public int Id { get; set; }
     public byte[] Signature { get; set; }
     public string Comment { get; set; }
-    public DateTime Date { get; set; }
+    public string Date { get; set; }
+    public string SigneeName { get; set; }
+    public int StampIdentity { get; set; }
 
-    // Navigation propterties
-    public SignedDocument SignedDocument { get; set; }
 }

@@ -9,7 +9,7 @@ namespace FileService.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
-    public class CertificateController : Controller
+    public class CertificateController : ControllerBase
     {
         private readonly ICertificateRepo _certificateRepo;
 

@@ -4,6 +4,7 @@ using DocumentService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FileService.Migrations
 {
     [DbContext(typeof(FileDbContext))]
-    partial class FileDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240423125356_DeletedNavPropStamp")]
+    partial class DeletedNavPropStamp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -162,22 +165,14 @@ namespace FileService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Date")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<byte[]>("Signature")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<int?>("SignedDocumentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SigneeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StampIdentity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -190,6 +185,10 @@ namespace FileService.Migrations
             modelBuilder.Entity("DocumentService.Models.SignedDocument", b =>
                 {
                     b.HasBaseType("DocumentService.Models.Document");
+
+                    b.Property<string>("Signess")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TestType")
                         .HasColumnType("nvarchar(max)");

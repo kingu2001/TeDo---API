@@ -7,9 +7,9 @@ namespace FileService;
 [ApiController]
 public class SignedDocumentController : ControllerBase
 {
-    private readonly SignedDocumentRepo _repo;
+    private readonly ISignedDocumentRepo _repo;
 
-    public SignedDocumentController(SignedDocumentRepo signedDocumentRepo)
+    public SignedDocumentController(ISignedDocumentRepo signedDocumentRepo)
     {
         _repo = signedDocumentRepo;
     }
@@ -39,6 +39,7 @@ public class SignedDocumentController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<SignedDocument>> CreateSignedDocument(SignedDocument signedDocument)
     {
+        Console.WriteLine("--> Create Signed Document endpoint hit");
         var result = await _repo.AddSignedDocumentAsync(signedDocument);
         if(result)
         {
