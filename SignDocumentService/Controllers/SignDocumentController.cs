@@ -13,7 +13,7 @@ namespace SignDocumentService.Controllers
     {
 
         [HttpPost]
-        public async Task<SignedDocument> SignUnsignedDocument(Models.Document document, X509Certificate2 x509Certificate, string signee, string comment)
+        public async Task<SignedDocument> SignUnsignedDocument(Models.Document document, string signee, string comment)
         {
             //create signed document
             SignedDocument signedDocument = new SignedDocument
@@ -24,9 +24,10 @@ namespace SignDocumentService.Controllers
                 FileContent = document.FileContent
             };
 
+            X509Certificate2 certificate = new X509Certificate2("cert.pfx", "1234");
             //Sign document
             byte[] dataToSign;
-            RSA privatekey = x509Certificate.GetRSAPrivateKey();
+            RSA privatekey = certificate.GetRSAPrivateKey();
             using(MemoryStream ms = new MemoryStream())
             {
                 JsonSerializer.Serialize(ms, document);
@@ -53,10 +54,12 @@ namespace SignDocumentService.Controllers
         }
 
         [HttpPost]
-        public async Task<SignedDocument> SignSignedDocument(SignedDocument signedDocument, X509Certificate2 x509Certificate, string signee, string comment)
+        [Route("SignSignedDocument")]
+        public async Task<SignedDocument> SignSignedDocument(SignedDocument signedDocument, string signee, string comment)
         {
+            X509Certificate2 certificate = new X509Certificate2("cert.pfx", "1234");
             byte[] dataToSign;
-            RSA privatekey = x509Certificate.GetRSAPrivateKey();
+            RSA privatekey = certificate.GetRSAPrivateKey();
             using(MemoryStream ms = new MemoryStream())
             {
                 JsonSerializer.Serialize(ms, signedDocument);
