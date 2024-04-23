@@ -4,10 +4,9 @@ namespace FileService;
 
 public interface ISignedDocumentRepo
 {
-        bool SaveChanges();
-        Task<IEnumerable<SignedDocument>> GetAllDocuments();
-        Task<SignedDocument> GetDocumentById(int id);
-        bool UpdateDocument(SignedDocument signedDocument, int id);
-        Task<bool> DeleteDocumentById(int id);
-        bool UploadDocumentToDb(SignedDocument signedDocument);
+        Task<bool> SaveChangesAsync();
+        Task<IEnumerable<SignedDocument>> GetAllDocumentsAsync();
+        Task<SignedDocument> GetDocumentByIdAsync(int id);
+        Task<bool> DeleteDocumentByIdAsync(int id);
+        Task<bool> AddSignedDocumentAsync(SignedDocument signedDocument);
 }

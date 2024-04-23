@@ -45,7 +45,7 @@ public class PunchRepo : IPunchRepo
                 .Where(p => p.SignedDocumentId == signedDocumentId && p.Id == punchId).FirstOrDefaultAsync();
     }
 
-    public async Task<bool> UpdatePunchAsync(Punch punch, int punchId, int signedDocumentId)
+    public async void UpdatePunchAsync(Punch punch, int punchId, int signedDocumentId)
     {
         if (punch == null)
         {
@@ -59,8 +59,6 @@ public class PunchRepo : IPunchRepo
              .SetProperty(p => p.PunchNumber, punch.PunchNumber)
              .SetProperty(p => p.Action, punch.Action)
              .SetProperty(p => p.Description, punch.Description));
-
-        return await SaveChangesAsync();
     }
 
     public async Task<bool> SaveChangesAsync()

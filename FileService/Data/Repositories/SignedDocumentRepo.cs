@@ -12,48 +12,38 @@ public class SignedDocumentRepo : ISignedDocumentRepo
     {
         _fileDbContext = fileDbContext;
     }
-    public Task<bool> DeleteDocumentById(int id)
+    public async Task<bool> DeleteDocumentByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var result = await _fileDbContext.SignedDocuments.FirstOrDefaultAsync(s => s.Id == id);
+        if (result == null)
+        {
+            throw new ArgumentNullException(nameof(result));
+        }
+        _fileDbContext.SignedDocuments.Remove(result);
+
+        return await SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<SignedDocument>> GetAllDocuments()
+    public async Task<IEnumerable<SignedDocument>> GetAllDocumentsAsync()
     {
         var result = await _fileDbContext.SignedDocuments.ToListAsync();
         return result;
     }
 
-    public async Task<SignedDocument> GetDocumentById(int id)
+    public async Task<SignedDocument> GetDocumentByIdAsync(int id)
     {
         var result = await _fileDbContext.SignedDocuments.FirstOrDefaultAsync(s => s.Id == id);
         return result;
     }
 
-    public bool SaveChanges()
-    {
-        return _fileDbContext.SaveChanges() >= 0;
-    }
-
-    public bool UpdateDocument(SignedDocument signedDocument, int id)
-    {
-            //Returns number off affected rows
-            var result = _fileDbContext.SignedDocuments
-                            .Where(d => d.Id == id)
-                            .ExecuteUpdate(setters => setters
-                                    .SetProperty(b => b.FileContent, signedDocument.FileContent)
-                                    .SetProperty(b => b.FileName, signedDocument.FileName));
-            if(result > 0)
-            {
-                return true;
-            }
-            {
-                return false;
-            }
-    }
-
-    public bool UploadDocumentToDb(SignedDocument signedDocument)
+    public Task<bool> AddSignedDocumentAsync(SignedDocument signedDocument)
     {
         _fileDbContext.SignedDocuments.Add(signedDocument);
-        return SaveChanges();
+        return SaveChangesAsync();
+    }
+
+    public async Task<bool> SaveChangesAsync()
+    {
+        return await _fileDbContext.SaveChangesAsync() >= 0;
     }
 }
