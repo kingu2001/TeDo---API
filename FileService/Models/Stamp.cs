@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using DocumentService.Models;
 
 namespace FileService;
 
@@ -11,5 +13,10 @@ public class Stamp
     public string Date { get; set; }
     public string SigneeName { get; set; }
     public int StampIdentity { get; set; }
+    public int SignedDocumentId { get; set; }
+
+    // Navigation properties
+    [JsonIgnore]
+    public SignedDocument signedDocument { get; set; }
 
 }

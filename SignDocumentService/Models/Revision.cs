@@ -1,4 +1,6 @@
-﻿namespace SignDocumentService.Models
+﻿using System.Text.Json.Serialization;
+
+namespace SignDocumentService.Models
 {
     public class Revision
     {
@@ -7,7 +9,11 @@
         public string SectionAffected { get; set; }
         public string Description { get; set; }
         public string Date { get; set; }
-        //navigation property
+        public int SignedDocumentId { get; set; }
+
+
+        //navigation propert
+        [JsonIgnore]
         public SignedDocument SignedDocument { get; set; }
     }
 }

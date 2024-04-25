@@ -1,9 +1,6 @@
 ﻿using FileService.Data.Repositories;
 using FileService.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
 namespace FileService.Controllers
 {
