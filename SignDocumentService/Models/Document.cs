@@ -5,7 +5,7 @@ namespace SignDocumentService.Models
     public class Document
     {
         [JsonIgnore]
-        public int Id { get; set; }
+        public int Id { internal get; set; }
         public string FileName { get; set; }
         public string ContentType { get; set; }
         public byte[] FileContent { get; set; }

@@ -44,12 +44,9 @@ namespace FileService.Data
                                     .SetProperty(b => b.FileContent, document.FileContent)
                                     .SetProperty(b => b.FileName, document.FileName));
             if(result > 0)
-            {
                 return true;
-            }
-            {
+            else
                 return false;
-            }
         }
 
         public async Task<bool> DeleteDocumentById(int id)

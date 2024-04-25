@@ -50,5 +50,23 @@ namespace FileService.Data
         {
             return await _fileDbContext.SaveChangesAsync() >= 0;
         }
+
+        public async Task<bool> UpdateSignedDocumentAsync(SignedDocument signedDocument, int signedDocumentId)
+        {
+            if(signedDocument == null)
+            {
+                throw new ArgumentNullException(nameof(signedDocument));
+            }
+            var result = await _fileDbContext.SignedDocuments
+                            .Where(s => s.Id == signedDocumentId)
+                            .ExecuteUpdateAsync(setters => setters
+                                .SetProperty(s => s.Stamps, signedDocument.Stamps)
+                                .SetProperty(s => s.Punches, signedDocument.Punches)
+                                .SetProperty(s => s.Revisions, signedDocument.Revisions));
+            if (result > 0)
+                return true;
+            else
+                return false;
+        }
     }
 }

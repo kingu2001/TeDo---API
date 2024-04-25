@@ -10,6 +10,7 @@ namespace SignDocumentService.Models
         public string Date { get; set; }
         public string SigneeName { get; set; }
         public int StampIdentity { get; set; }
+        public string? TestType { get; set; }
         public int SignedDocumentId { get; set; }
     }
 }

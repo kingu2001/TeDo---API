@@ -65,9 +65,9 @@ namespace SignDocumentService.Controllers
             else return StatusCode(500, $"It no worky... {result.StatusCode}");
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("SignSignedDocument")]
-        public async Task<ActionResult<string>> SignSignedDocument(SignedDocument signedDocument, string signee, string comment)
+        public async Task<ActionResult<string>> SignSignedDocument(SignedDocument signedDocument, string signee, string comment, string testType)
         {
             X509Certificate2 certificate = new X509Certificate2("cert.pfx", "12345");
             byte[] dataToSign;
@@ -87,17 +87,17 @@ namespace SignDocumentService.Controllers
                     Comment = comment,
                     Date = DateTime.Now.ToString(),
                     StampIdentity = signedDocument.Stamps.Count + 1,
+                    TestType = testType,
                 };
                 signedDocument.Stamps.Add(stamp);
             }
-
-            var result = await _client.PostAsJsonAsync(_fileServiceBaseUrl, signedDocument);
+            var result = await _client.PutAsJsonAsync($"{_fileServiceBaseUrl} + /{signedDocument.Id}", signedDocument);
             Console.WriteLine(result.StatusCode.ToString());
             if (result.IsSuccessStatusCode)
             {
                 return Ok("Signing was succesfull");
             }
-            else return StatusCode(500, "It no worky...");
+            else return StatusCode(500, $"It no worky...{result.StatusCode}, {signedDocument.Id}");
 
         }
     }

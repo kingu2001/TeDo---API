@@ -42,13 +42,23 @@ public class SignedDocumentController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<SignedDocument>> CreateSignedDocument(SignedDocument signedDocument)
     {
-        Console.WriteLine("--> Create Signed Document endpoint hit");
         var result = await _repo.AddSignedDocumentAsync(signedDocument);
         if (result)
         {
             return CreatedAtRoute(nameof(GetSignedDocumentById), result);
         }
         else return StatusCode(500, "Creation failed");
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<SignedDocument>> UpdateSignedDocument(SignedDocument signedDocument, int id)
+    {
+        var result = await _repo.UpdateSignedDocumentAsync(signedDocument, id);
+        if (result)
+        {
+            return StatusCode(204, signedDocument);
+        }
+        else return StatusCode(500);
     }
 
     [HttpDelete("{id}")]
