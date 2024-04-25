@@ -65,7 +65,7 @@ namespace SignDocumentService.Controllers
             else return StatusCode(500, $"It no worky... {result.StatusCode}");
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("SignSignedDocument")]
         public async Task<ActionResult<string>> SignSignedDocument(SignedDocument signedDocument, string signee, string comment, string testType)
         {
@@ -91,7 +91,7 @@ namespace SignDocumentService.Controllers
                 };
                 signedDocument.Stamps.Add(stamp);
             }
-            var result = await _client.PutAsJsonAsync(_fileServiceBaseUrl, signedDocument);
+            var result = await _client.PostAsJsonAsync($"{_fileServiceBaseUrl}" + "/update", signedDocument);
             Console.WriteLine(result.StatusCode.ToString());
             if (result.IsSuccessStatusCode)
             {

@@ -56,6 +56,7 @@ namespace FileService.Data
             if(signedDocument == null)
             {
                 throw new ArgumentNullException(nameof(signedDocument));
+                
             }
             var result = await _fileDbContext.SignedDocuments
                             .Where(s => s.FileName == signedDocument.FileName)

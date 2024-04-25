@@ -45,12 +45,14 @@ public class SignedDocumentController : ControllerBase
         var result = await _repo.AddSignedDocumentAsync(signedDocument);
         if (result)
         {
-            return CreatedAtRoute(nameof(GetSignedDocumentById), result);
+            return Ok(result);
+            //return CreatedAtRoute(nameof(GetSignedDocumentById), result);
         }
         else return StatusCode(500, "Creation failed");
     }
 
-    [HttpPut("{id}")]
+    [HttpPost]
+    [Route("Update")]
     public async Task<ActionResult<SignedDocument>> UpdateSignedDocument(SignedDocument signedDocument)
     {
         var result = await _repo.UpdateSignedDocumentAsync(signedDocument);
