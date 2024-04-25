@@ -51,14 +51,14 @@ namespace FileService.Data
             return await _fileDbContext.SaveChangesAsync() >= 0;
         }
 
-        public async Task<bool> UpdateSignedDocumentAsync(SignedDocument signedDocument, int signedDocumentId)
+        public async Task<bool> UpdateSignedDocumentAsync(SignedDocument signedDocument)
         {
             if(signedDocument == null)
             {
                 throw new ArgumentNullException(nameof(signedDocument));
             }
             var result = await _fileDbContext.SignedDocuments
-                            .Where(s => s.Id == signedDocumentId)
+                            .Where(s => s.FileName == signedDocument.FileName)
                             .ExecuteUpdateAsync(setters => setters
                                 .SetProperty(s => s.Stamps, signedDocument.Stamps)
                                 .SetProperty(s => s.Punches, signedDocument.Punches)

@@ -9,5 +9,5 @@ public interface ISignedDocumentRepo
         Task<SignedDocument> GetDocumentByIdAsync(int id);
         Task<bool> DeleteDocumentByIdAsync(int id);
         Task<bool> AddSignedDocumentAsync(SignedDocument signedDocument);
-        Task<bool> UpdateSignedDocumentAsync(SignedDocument signedDocument, int signedDocumentId);
+        Task<bool> UpdateSignedDocumentAsync(SignedDocument signedDocument);
 }

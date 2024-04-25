@@ -51,9 +51,9 @@ public class SignedDocumentController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<SignedDocument>> UpdateSignedDocument(SignedDocument signedDocument, int id)
+    public async Task<ActionResult<SignedDocument>> UpdateSignedDocument(SignedDocument signedDocument)
     {
-        var result = await _repo.UpdateSignedDocumentAsync(signedDocument, id);
+        var result = await _repo.UpdateSignedDocumentAsync(signedDocument);
         if (result)
         {
             return StatusCode(204, signedDocument);

@@ -26,7 +26,7 @@ namespace SignDocumentService.Controllers
             SignedDocument signedDocument = new SignedDocument
             {
                 Id = document.Id,
-                FileName = document.FileName,
+                FileName = "signed_" + document.FileName,
                 ContentType = document.ContentType,
                 FileContent = document.FileContent,
                 Stamps = new List<Stamp>()
@@ -91,7 +91,7 @@ namespace SignDocumentService.Controllers
                 };
                 signedDocument.Stamps.Add(stamp);
             }
-            var result = await _client.PutAsJsonAsync($"{_fileServiceBaseUrl} + /{signedDocument.Id}", signedDocument);
+            var result = await _client.PutAsJsonAsync(_fileServiceBaseUrl, signedDocument);
             Console.WriteLine(result.StatusCode.ToString());
             if (result.IsSuccessStatusCode)
             {
