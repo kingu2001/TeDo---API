@@ -1,7 +1,9 @@
-﻿using DocumentService.Models;
+﻿
 using Microsoft.AspNetCore.Mvc;
+using FileService.Models;
+using FileService.Data;
 
-namespace FileService;
+namespace FileService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -18,7 +20,7 @@ public class SignedDocumentController : ControllerBase
     public async Task<ActionResult<IEnumerable<SignedDocument>>> GetSignedDocuments()
     {
         var result = await _repo.GetAllDocumentsAsync();
-        if(result != null)
+        if (result != null)
         {
             return Ok(result);
         }
@@ -29,9 +31,10 @@ public class SignedDocumentController : ControllerBase
     public async Task<ActionResult<SignedDocument>> GetSignedDocumentById(int id)
     {
         var result = await _repo.GetDocumentByIdAsync(id);
-        if(result != null)
+        if (result != null)
         {
-            return CreatedAtRoute(nameof(GetSignedDocumentById), result);
+            return Ok(result);
+
         }
         else return NotFound();
     }
@@ -41,9 +44,9 @@ public class SignedDocumentController : ControllerBase
     {
         Console.WriteLine("--> Create Signed Document endpoint hit");
         var result = await _repo.AddSignedDocumentAsync(signedDocument);
-        if(result)
+        if (result)
         {
-            return Ok(signedDocument);
+            return CreatedAtRoute(nameof(GetSignedDocumentById), result);
         }
         else return StatusCode(500, "Creation failed");
     }
@@ -52,7 +55,7 @@ public class SignedDocumentController : ControllerBase
     public async Task<ActionResult> DeleteSignedDocument(int id)
     {
         var result = await _repo.DeleteDocumentByIdAsync(id);
-        if(result)
+        if (result)
         {
             var updatedSignedDocument = await _repo.GetDocumentByIdAsync(id);
             return Ok(updatedSignedDocument);

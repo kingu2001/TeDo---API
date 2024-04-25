@@ -1,17 +1,17 @@
-﻿using DocumentService.Models;
+﻿using FileService.Models;
 
-namespace DocumentService.Data
+namespace FileService.Data;
+
+public interface IDocumentRepo
 {
-    public interface IDocumentRepo
-    {
-        bool SaveChanges();
-        Task<IEnumerable<Document>> GetAllDocuments();
-        Task<Document> GetDocumentById(int id);
-        bool UpdateDocument(Document document, int id);
-        Task<bool> DeleteDocumentById(int id);
-        bool UploadDocumentToDb(Document document);
+    bool SaveChanges();
+    Task<IEnumerable<Document>> GetAllDocuments();
+    Task<Document> GetDocumentById(int id);
+    bool UpdateDocument(Document document, int id);
+    Task<bool> DeleteDocumentById(int id);
+    bool UploadDocumentToDb(Document document);
 
-    }
 }
+
 
 

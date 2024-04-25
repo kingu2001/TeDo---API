@@ -1,5 +1,4 @@
-using DocumentService.Data;
-using FileService;
+using FileService.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

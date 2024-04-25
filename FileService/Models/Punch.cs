@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using DocumentService.Models;
 
-namespace FileService;
+namespace FileService.Models;
 
 public class Punch
 {
@@ -14,8 +13,4 @@ public class Punch
     public string Owner { get; set; }
     public string Action { get; set; }
     public int SignedDocumentId { get; set; }
-
-    // Navigation propterties
-    [JsonIgnore]
-    public SignedDocument SignedDocument { get; set; }
 }

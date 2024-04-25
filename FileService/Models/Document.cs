@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
-namespace DocumentService.Models;
+namespace FileService.Models;
 
 public class Document
 {

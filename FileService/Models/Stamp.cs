@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using DocumentService.Models;
 
-namespace FileService;
+namespace FileService.Models;
 
 public class Stamp
 {
@@ -14,9 +12,4 @@ public class Stamp
     public string SigneeName { get; set; }
     public int StampIdentity { get; set; }
     public int SignedDocumentId { get; set; }
-
-    // Navigation properties
-    [JsonIgnore]
-    public SignedDocument signedDocument { get; set; }
-
 }

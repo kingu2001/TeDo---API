@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using DocumentService.Models;
 
-namespace FileService;
+namespace FileService.Models;
 
 public class Revision
 {
@@ -14,9 +12,4 @@ public class Revision
     public string Description { get; set; }
     public DateTime Date { get; set; }
     public int SignedDocumentId { get; set; }
-
-    // Navigation propterties
-    [JsonIgnore]
-    public SignedDocument SignedDocument { get; set; }
-
 }

@@ -1,6 +1,6 @@
-﻿using DocumentService.Models;
+﻿using FileService.Models;
 
-namespace FileService;
+namespace FileService.Data;
 
 public interface ISignedDocumentRepo
 {

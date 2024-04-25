@@ -1,4 +1,6 @@
-﻿namespace SignDocumentService.Models
+﻿using System.Text.Json.Serialization;
+
+namespace SignDocumentService.Models
 {
     public class Stamp
     {
@@ -9,9 +11,5 @@
         public string SigneeName { get; set; }
         public int StampIdentity { get; set; }
         public int SignedDocumentId { get; set; }
-
-        // Navigation properties
-        public SignedDocument SignedDocument { get; set; }
-
     }
 }

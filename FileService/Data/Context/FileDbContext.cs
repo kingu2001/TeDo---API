@@ -1,9 +1,7 @@
-﻿using DocumentService.Models;
-using FileService;
-using FileService.Models;
+﻿using FileService.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DocumentService.Data
+namespace FileService.Data
 {
     public class FileDbContext : DbContext
     {

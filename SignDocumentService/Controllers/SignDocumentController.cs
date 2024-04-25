@@ -52,6 +52,7 @@ namespace SignDocumentService.Controllers
                     Comment = comment,
                     Date = DateTime.Now.ToString(),
                     StampIdentity = 1,
+                    SignedDocumentId = signedDocument.Id,
                 };
                 signedDocument.Stamps.Add(stamp);
             }
@@ -61,7 +62,7 @@ namespace SignDocumentService.Controllers
             {
                 return Ok("Signing was succesfull");
             }
-            else return StatusCode(500, "It no worky...");
+            else return StatusCode(500, $"It no worky... {result.StatusCode}");
         }
 
         [HttpPost]
@@ -91,7 +92,7 @@ namespace SignDocumentService.Controllers
             }
 
             var result = await _client.PostAsJsonAsync(_fileServiceBaseUrl, signedDocument);
-            System.Console.WriteLine(result.StatusCode.ToString());
+            Console.WriteLine(result.StatusCode.ToString());
             if (result.IsSuccessStatusCode)
             {
                 return Ok("Signing was succesfull");

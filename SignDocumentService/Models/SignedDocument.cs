@@ -2,7 +2,7 @@
 {
     public class SignedDocument : Document
     {
-        public string TestType { get; set; }
+        public string? TestType { get; set; }
 
         // Navigation properties
         public List<Punch>? Punches { get; set; }

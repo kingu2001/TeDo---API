@@ -1,8 +1,7 @@
-﻿using DocumentService.Data;
-using FileService.Models;
+﻿using FileService.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FileService.Data.Repositories
+namespace FileService.Data
 {
     public class CertficateRepo : ICertificateRepo
     {

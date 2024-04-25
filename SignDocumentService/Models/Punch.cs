@@ -13,8 +13,4 @@ public class Punch
     public string Owner { get; set; }
     public string Action { get; set; }
     public int SignedDocumentId { get; set; }
-
-    // Navigation properties
-    [JsonIgnore]
-    public SignedDocument SignedDocument { get; set; }
 }

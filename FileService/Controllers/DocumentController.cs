@@ -1,8 +1,8 @@
-﻿using DocumentService.Data;
-using DocumentService.Models;
+﻿using FileService.Data;
+using FileService.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DocumentService.Controllers
+namespace FileService.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
