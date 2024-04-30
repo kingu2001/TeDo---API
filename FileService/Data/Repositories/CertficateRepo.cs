@@ -29,12 +29,6 @@ namespace FileService.Data
             return SaveChanges();
         }
 
-        public async Task<IEnumerable<Certificate>> GetAllCertificates()
-        {
-            var result = await _fileDbContext.Certificates.ToListAsync();
-            return result;
-        }
-
 
         public async Task<bool> DeleteCertificateById(int id)
         {

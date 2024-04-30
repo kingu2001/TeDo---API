@@ -13,6 +13,7 @@ builder.Services.AddDbContext<FileDbContext>(options => options
 
 builder.Services.AddScoped<IDocumentRepo, DocumentRepo>();
 builder.Services.AddScoped<ISignedDocumentRepo, SignedDocumentRepo>();
+builder.Services.AddScoped<ICertificateRepo, CertficateRepo>();
 
 var app = builder.Build();
 

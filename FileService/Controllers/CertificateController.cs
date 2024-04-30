@@ -15,7 +15,7 @@ namespace FileService.Controllers
             _certificateRepo = certificateRepo;
         }
 
-        [HttpGet("{id}", Name = "GetCertificateById")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetCertficateById(int id)
         {
             var retrievedCertificate = await _certificateRepo.GetCertficateById(id);
@@ -30,22 +30,9 @@ namespace FileService.Controllers
             return Ok(retrievedCertificate);
         }
 
-        [HttpGet]
-        [Route("/api/Document/GetAllCertificateInformation")]
-        public async Task<ActionResult<Certificate>> GetAllCertificateInformation()
-        {
-            var retrievedCertificates = await _certificateRepo.GetAllCertificates();
-            if (retrievedCertificates == null)
-            {
-                return NotFound("--> The database is empty");
-            }
-            return Ok(retrievedCertificates);
-        }
-
         
 
         [HttpPost]
-        [Route("/api/Document/UploadCertificateData")]
         public async Task<ActionResult<Certificate>> UploadCertificateData()
         {
             if (!Request.HasFormContentType)
@@ -72,7 +59,7 @@ namespace FileService.Controllers
 
             Console.WriteLine($"--> File uploaded succesfully: {uploadCertificate.CertificateOwner}");
 
-            return CreatedAtRoute(nameof(GetCertficateById), new { id = uploadCertificate.Id }, uploadCertificate);
+            return Ok();
         }
 
         //[HttpPost]
