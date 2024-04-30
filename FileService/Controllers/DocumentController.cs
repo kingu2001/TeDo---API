@@ -1,4 +1,6 @@
-﻿using FileService.Data;
+﻿using AutoMapper;
+using FileService.Data;
+using FileService.Dtos;
 using FileService.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,17 +11,19 @@ namespace FileService.Controllers
     public class DocumentController : ControllerBase
     {
         private readonly IDocumentRepo _repo;
+        private readonly IMapper _mapper;
 
-        public DocumentController(IDocumentRepo documentRepo)
+        public DocumentController(IDocumentRepo documentRepo, IMapper mapper)
         {
             _repo = documentRepo;
+            _mapper = mapper;
         }
         
         [HttpGet("{id}", Name = "GetDocumentById")]
         public async Task<IActionResult> GetDocumentById(int id)
         {
             var retrivedDocument = await _repo.GetDocumentById(id);
-            if(retrivedDocument == null)
+            if (retrivedDocument == null)
             {
                 return NotFound($"--> No entry with the supplied id exists");
             }
@@ -27,19 +31,18 @@ namespace FileService.Controllers
 
             // Uncomment bellow line to return as file and not JSON
             //return File(retrivedDocument.FileContent, retrivedDocument.ContentType, retrivedDocument.FileName, true);
-            return Ok(retrivedDocument);
+            return Ok(_mapper.Map<DocumentReadDto>(retrivedDocument));
         }
 
         [HttpGet]
-        [Route("/api/Document/GetAllDocumentInformation")]
-        public async Task<ActionResult<Document>> GetAllDocumentInformation()
+        public async Task<ActionResult<Document>> GetDocumentsInfo()
         {
             var retrivedDocuments = await _repo.GetAllDocuments();
-            if(retrivedDocuments == null)
+            if (retrivedDocuments == null)
             {
                 return NotFound("--> The database is empty");
             }
-            return Ok(retrivedDocuments);
+            return Ok(_mapper.Map<IEnumerable<DocumentInfoDto>>(retrivedDocuments));
         }
 
         [HttpPost("{id}")]
@@ -49,11 +52,11 @@ namespace FileService.Controllers
             {
                 return BadRequest("Expected a form data request");
             }
-            
+
             var form = await Request.ReadFormAsync();
             var file = form.Files.FirstOrDefault();
 
-            if(file == null)
+            if (file == null)
             {
                 return BadRequest("No file uploaded");
             }
@@ -66,12 +69,12 @@ namespace FileService.Controllers
             };
 
             var result = _repo.UpdateDocument(updatedDocument, id);
-            if(!result)
+            if (!result)
             {
                 Console.WriteLine("--> Nothing to update");
                 return NotFound("--> Nothing to update");
             }
-            
+
             Console.WriteLine($"--> Document updated successfully: {updatedDocument.FileName}");
             return Ok($"Document updated successfully: {updatedDocument.FileName}");
         }
@@ -88,7 +91,7 @@ namespace FileService.Controllers
             var form = await Request.ReadFormAsync();
             var file = form.Files.FirstOrDefault();
 
-            if(file == null)
+            if (file == null)
             {
                 return BadRequest("No file uploaded");
             }
@@ -99,29 +102,33 @@ namespace FileService.Controllers
                 ContentType = file.ContentType,
                 FileContent = await ReadFileContentAsync(file.OpenReadStream())
             };
-            
+
             _repo.UploadDocumentToDb(uploadFile);
-            
+
             Console.WriteLine($"--> File uploaded succesfully: {uploadFile.FileName}");
 
-            return CreatedAtRoute(nameof(GetDocumentById), new {id = uploadFile.Id}, uploadFile);
+            return CreatedAtRoute(nameof(GetDocumentById), new { id = uploadFile.Id }, uploadFile);
         }
 
         [HttpPost]
         [Route("/api/Document/UploadFileJson")]
-        public ActionResult<Document> UploadFileJson(Document document)
+        public ActionResult<Document> UploadFileJson(DocumentCreateDto documentCreateDto)
         {
-            if(document == null)
+            if (documentCreateDto == null)
             {
-                return BadRequest("Missing JSON body is empty"); 
+                return BadRequest("Missing JSON body is empty");
             }
+
+            var document = _mapper.Map<Document>(documentCreateDto);
+
             var dbSaveResult = _repo.UploadDocumentToDb(document);
 
+            var documentReadDto = _mapper.Map<DocumentReadDto>(document);
 
-            if(dbSaveResult)
+            if (dbSaveResult)
             {
-                Console.WriteLine($"--> File uploaded succesfully: {document.FileName}");
-                return CreatedAtRoute(nameof(GetDocumentById), new {id = document.Id}, document);
+                Console.WriteLine($"--> File uploaded succesfully: {documentReadDto.FileName}");
+                return CreatedAtRoute(nameof(GetDocumentById), new { id = documentReadDto.Id }, documentReadDto);
             }
             else
             {
@@ -134,7 +141,7 @@ namespace FileService.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteDocumentById(int id)
         {
-            if(await _repo.DeleteDocumentById(id))
+            if (await _repo.DeleteDocumentById(id))
             {
                 return Ok("--> Document was deleted successfully");
             }

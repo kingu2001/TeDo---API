@@ -1,11 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿namespace SignDocumentService.Dtos;
 
-namespace SigningService.Models;
-
-public class Document
+public class DocumentReadDto
 {
-    [Key]
     public int Id { get; set; }
     public string FileName { get; set; }
     public string ContentType { get; set; }

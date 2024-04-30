@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using FileService.Models;
 using FileService.Data;
+using AutoMapper;
+using FileService.Dtos;
+using System.Net.Http.Headers;
 
 namespace FileService.Controllers;
 
@@ -10,10 +13,12 @@ namespace FileService.Controllers;
 public class SignedDocumentController : ControllerBase
 {
     private readonly ISignedDocumentRepo _repo;
+    private readonly IMapper _mapper;
 
-    public SignedDocumentController(ISignedDocumentRepo signedDocumentRepo)
+    public SignedDocumentController(ISignedDocumentRepo signedDocumentRepo, IMapper mapper)
     {
         _repo = signedDocumentRepo;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -22,7 +27,7 @@ public class SignedDocumentController : ControllerBase
         var result = await _repo.GetAllDocumentsAsync();
         if (result != null)
         {
-            return Ok(result);
+            return Ok(_mapper.Map<IEnumerable<SignedDocumentReadDto>>(result));
         }
         return NotFound("No signed documents exists");
     }
@@ -33,32 +38,33 @@ public class SignedDocumentController : ControllerBase
         var result = await _repo.GetDocumentByIdAsync(id);
         if (result != null)
         {
-            return Ok(result);
+            return Ok(_mapper.Map<SignedDocumentReadDto>(result));
 
         }
         else return NotFound();
     }
 
     [HttpPost]
-    public async Task<ActionResult<SignedDocument>> CreateSignedDocument(SignedDocument signedDocument)
+    public async Task<ActionResult<SignedDocument>> CreateSignedDocument(SignedDocumentCreateDto signedDocumentCreateDto)
     {
+        var signedDocument = _mapper.Map<SignedDocument>(signedDocumentCreateDto);
         var result = await _repo.AddSignedDocumentAsync(signedDocument);
+        var signedDocumentReadDto = _mapper.Map<SignedDocumentReadDto>(signedDocument);
         if (result)
         {
-            return Ok(result);
-            //return CreatedAtRoute(nameof(GetSignedDocumentById), result);
+            return CreatedAtRoute(nameof(GetSignedDocumentById), new {signedDocumentReadDto.Id}, signedDocumentReadDto);
         }
         else return StatusCode(500, "Creation failed");
     }
 
-    [HttpPost]
-    [Route("Update")]
-    public async Task<ActionResult<SignedDocument>> UpdateSignedDocument(SignedDocument signedDocument)
+    [HttpPost("UpdateSignedDocument/{id}")]
+    public async Task<ActionResult<SignedDocument>> UpdateSignedDocument(SignedDocumentCreateDto signedDocumentCreateDto, int id)
     {
-        var result = await _repo.UpdateSignedDocumentAsync(signedDocument);
+        var signedDocumentUpdateData = _mapper.Map<SignedDocument>(signedDocumentCreateDto);
+        var result = await _repo.UpdateSignedDocumentAsync(signedDocumentUpdateData, id);
         if (result)
         {
-            return StatusCode(204, signedDocument);
+            return Ok(signedDocumentUpdateData);
         }
         else return StatusCode(500);
     }

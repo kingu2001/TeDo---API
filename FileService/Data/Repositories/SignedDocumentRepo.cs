@@ -40,10 +40,10 @@ namespace FileService.Data
             return result;
         }
 
-        public Task<bool> AddSignedDocumentAsync(SignedDocument signedDocument)
+        public async Task<bool> AddSignedDocumentAsync(SignedDocument signedDocument)
         {
             _fileDbContext.SignedDocuments.Add(signedDocument);
-            return SaveChangesAsync();
+            return await SaveChangesAsync();
         }
 
         public async Task<bool> SaveChangesAsync()
@@ -51,23 +51,23 @@ namespace FileService.Data
             return await _fileDbContext.SaveChangesAsync() >= 0;
         }
 
-        public async Task<bool> UpdateSignedDocumentAsync(SignedDocument signedDocument)
+        public async Task<bool> UpdateSignedDocumentAsync(SignedDocument signedDocument, int id)
         {
-            if(signedDocument == null)
+            if (signedDocument == null)
             {
                 throw new ArgumentNullException(nameof(signedDocument));
-                
+
             }
-            var result = await _fileDbContext.SignedDocuments
-                            .Where(s => s.FileName == signedDocument.FileName)
-                            .ExecuteUpdateAsync(setters => setters
-                                .SetProperty(s => s.Stamps, signedDocument.Stamps)
-                                .SetProperty(s => s.Punches, signedDocument.Punches)
-                                .SetProperty(s => s.Revisions, signedDocument.Revisions));
-            if (result > 0)
-                return true;
-            else
-                return false;
+            var entity = await _fileDbContext.SignedDocuments.FirstOrDefaultAsync(s => s.Id == id);
+
+            if (entity != null)
+            {
+                entity.Stamps = signedDocument.Stamps;
+                entity.Punches = signedDocument.Punches;
+                entity.Revisions = signedDocument.Revisions;
+            }
+
+            return await SaveChangesAsync();
         }
     }
 }
