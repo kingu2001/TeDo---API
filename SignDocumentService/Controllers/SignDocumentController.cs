@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SignDocumentService.Dtos;
 using SignDocumentService.Models;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -12,23 +14,24 @@ namespace SignDocumentService.Controllers
     {
         private readonly string _fileServiceBaseUrl;
         private readonly HttpClient _client;
+        private readonly IMapper _mapper;
 
-        public SignDocumentController(HttpClient httpClient)
+        public SignDocumentController(HttpClient httpClient, IMapper mapper)
         {
             _fileServiceBaseUrl = "http://localhost:5297/api/SignedDocument";
             _client = httpClient;
+            _mapper = mapper;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<string>> SignUnsignedDocument(Document document, string signee, string comment)
+        [HttpPost("SignUnsignedDocument")]
+        public async Task<ActionResult<string>> SignUnsignedDocument(DocumentCreateDto documentCreateDto, string signee, string comment)
         {
             //create signed document
             SignedDocument signedDocument = new SignedDocument
             {
-                Id = document.Id,
-                FileName = "signed_" + document.FileName,
-                ContentType = document.ContentType,
-                FileContent = document.FileContent,
+                FileName = "signed_" + documentCreateDto.FileName,
+                ContentType = documentCreateDto.ContentType,
+                FileContent = documentCreateDto.FileContent,
                 Stamps = new List<Stamp>()
             };
 
@@ -38,7 +41,7 @@ namespace SignDocumentService.Controllers
             RSA privatekey = certificate.GetRSAPrivateKey();
             using (MemoryStream ms = new MemoryStream())
             {
-                JsonSerializer.Serialize(ms, document);
+                JsonSerializer.Serialize(ms, documentCreateDto);
                 dataToSign = ms.ToArray();
             }
 
@@ -57,7 +60,9 @@ namespace SignDocumentService.Controllers
                 signedDocument.Stamps.Add(stamp);
             }
 
-            var result = await _client.PostAsJsonAsync(_fileServiceBaseUrl, signedDocument);
+            var signedDocumentCreateDto = _mapper.Map<SignedDocumentCreateDto>(signedDocument);
+
+            var result = await _client.PostAsJsonAsync(_fileServiceBaseUrl, signedDocumentCreateDto);
             if (result.IsSuccessStatusCode)
             {
                 return Ok("Signing was succesfull");
@@ -65,10 +70,12 @@ namespace SignDocumentService.Controllers
             else return StatusCode(500, $"It no worky... {result.StatusCode}");
         }
 
-        [HttpPost]
-        [Route("SignSignedDocument")]
-        public async Task<ActionResult<string>> SignSignedDocument(SignedDocument signedDocument, string signee, string comment, string testType)
+        [HttpPost("SignSignedDocument")]
+        public async Task<ActionResult<string>> SignSignedDocument(SignedDocumentReadDto signedDocumentReadDto, string signee, string comment, string testType)
         {
+
+            var signedDocument = _mapper.Map<SignedDocument>(signedDocumentReadDto);
+
             X509Certificate2 certificate = new X509Certificate2("cert.pfx", "12345");
             byte[] dataToSign;
             RSA privatekey = certificate.GetRSAPrivateKey();
@@ -91,7 +98,8 @@ namespace SignDocumentService.Controllers
                 };
                 signedDocument.Stamps.Add(stamp);
             }
-            var result = await _client.PostAsJsonAsync($"{_fileServiceBaseUrl}" + "/update", signedDocument);
+            // http://localhost:5297/api/SignedDocument/UpdateSignedDocument/1013
+            var result = await _client.PostAsJsonAsync($"{_fileServiceBaseUrl}/UpdateSignedDocument/{signedDocument.Id}", signedDocument);
             Console.WriteLine(result.StatusCode.ToString());
             if (result.IsSuccessStatusCode)
             {

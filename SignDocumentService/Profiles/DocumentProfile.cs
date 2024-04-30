@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using FileService.Dtos;
-using Document = FileService.Models.Document;
+using SignDocumentService.Dtos;
+using SignDocumentService.Models;
 
-namespace FileService.Profiles;
+namespace SignDocumentService.Profiles;
 
 public class DocumentProfile : Profile
 {
@@ -10,6 +10,5 @@ public class DocumentProfile : Profile
     {
         CreateMap<Document, DocumentReadDto>();
         CreateMap<DocumentCreateDto, Document>();
-        CreateMap<Document, DocumentInfoDto>();
     }
 }

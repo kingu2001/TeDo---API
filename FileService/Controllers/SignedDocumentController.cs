@@ -57,15 +57,14 @@ public class SignedDocumentController : ControllerBase
         else return StatusCode(500, "Creation failed");
     }
 
-    [HttpPost]
-    [Route("Update")]
+    [HttpPost("UpdateSignedDocument/{id}")]
     public async Task<ActionResult<SignedDocument>> UpdateSignedDocument(SignedDocumentCreateDto signedDocumentCreateDto, int id)
     {
         var signedDocumentUpdateData = _mapper.Map<SignedDocument>(signedDocumentCreateDto);
         var result = await _repo.UpdateSignedDocumentAsync(signedDocumentUpdateData, id);
         if (result)
         {
-            return StatusCode(204, signedDocumentUpdateData);
+            return Ok(signedDocumentUpdateData);
         }
         else return StatusCode(500);
     }
