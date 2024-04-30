@@ -10,6 +10,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<FileDbContext>(options => options
 .UseSqlServer(builder.Configuration.GetConnectionString("FileDbDontextConnectionString") ?? throw new InvalidOperationException("Connection string not found.")));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 builder.Services.AddScoped<IDocumentRepo, DocumentRepo>();
 builder.Services.AddScoped<ISignedDocumentRepo, SignedDocumentRepo>();
