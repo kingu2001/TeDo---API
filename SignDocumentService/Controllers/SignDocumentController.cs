@@ -11,11 +11,13 @@ namespace SignDocumentService.Controllers
     public class SignDocumentController : ControllerBase
     {
         private readonly string _fileServiceBaseUrl;
+        private readonly string _certificateServiceBaseUrl;
         private readonly HttpClient _client;
 
         public SignDocumentController(HttpClient httpClient)
         {
             _fileServiceBaseUrl = "http://localhost:5297/api/SignedDocument";
+            _certificateServiceBaseUrl = "http://localhost:5297/api/Certificate/2";
             _client = httpClient;
         }
 
@@ -32,7 +34,8 @@ namespace SignDocumentService.Controllers
                 Stamps = new List<Stamp>()
             };
 
-            X509Certificate2 certificate = new X509Certificate2("cert.pfx", "12345");
+            Certificate cert = await _client.GetFromJsonAsync<Certificate>(_certificateServiceBaseUrl);
+            X509Certificate2 certificate = new X509Certificate2(cert.CertificateData, "12345");
             //Sign document
             byte[] dataToSign;
             RSA privatekey = certificate.GetRSAPrivateKey();
@@ -69,7 +72,8 @@ namespace SignDocumentService.Controllers
         [Route("SignSignedDocument")]
         public async Task<ActionResult<string>> SignSignedDocument(SignedDocument signedDocument, string signee, string comment, string testType)
         {
-            X509Certificate2 certificate = new X509Certificate2("cert.pfx", "12345");
+            Certificate cert = await _client.GetFromJsonAsync<Certificate>(_certificateServiceBaseUrl);
+            X509Certificate2 certificate = new X509Certificate2(cert.CertificateData, "12345");
             byte[] dataToSign;
             RSA privatekey = certificate.GetRSAPrivateKey();
             using (MemoryStream ms = new MemoryStream())
