@@ -20,13 +20,13 @@ namespace SignDocumentService.Controllers
         public SignDocumentController(HttpClient httpClient, IMapper mapper)
         {
             _fileServiceBaseUrl = "http://localhost:5297/api/SignedDocument";
-            _certificateServiceBaseUrl = "http://localhost:5297/api/Certificate/2";
+            _certificateServiceBaseUrl = "http://localhost:5297/api/Certificate/";
             _client = httpClient;
             _mapper = mapper;
         }
 
-        [HttpPost("SignUnsignedDocument")]
-        public async Task<ActionResult<string>> SignUnsignedDocument(DocumentCreateDto documentCreateDto, string signee, string comment)
+        [HttpPost("SignUnsignedDocument/{id}")]
+        public async Task<ActionResult<string>> SignUnsignedDocument(DocumentCreateDto documentCreateDto, string signee, string comment, int id)
         {
             //create signed document
             SignedDocument signedDocument = new SignedDocument
@@ -37,7 +37,7 @@ namespace SignDocumentService.Controllers
                 Stamps = new List<Stamp>()
             };
 
-            Certificate cert = await _client.GetFromJsonAsync<Certificate>(_certificateServiceBaseUrl);
+            Certificate cert = await _client.GetFromJsonAsync<Certificate>($"{_certificateServiceBaseUrl}+{id}");
             X509Certificate2 certificate = new X509Certificate2(cert.CertificateData, "12345");
             //Sign document
             byte[] dataToSign;
@@ -73,16 +73,16 @@ namespace SignDocumentService.Controllers
             else return StatusCode(500, $"It no worky... {result.StatusCode}");
         }
 
-        [HttpPost("SignSignedDocument")]
-        public async Task<ActionResult<string>> SignSignedDocument(SignedDocumentReadDto signedDocumentReadDto, string signee, string comment, string testType)
+        [HttpPost("SignSignedDocument/{id}")]
+        public async Task<ActionResult<string>> SignSignedDocument(SignedDocumentReadDto signedDocumentReadDto, string signee, string comment, string testType, int id)
         {
-            Certificate cert = await _client.GetFromJsonAsync<Certificate>(_certificateServiceBaseUrl);
+            Certificate cert = await _client.GetFromJsonAsync<Certificate>($"{_certificateServiceBaseUrl}+{id}");
             X509Certificate2 certificate = new X509Certificate2(cert.CertificateData, "12345");
             byte[] dataToSign;
             RSA privatekey = certificate.GetRSAPrivateKey();
             using (MemoryStream ms = new MemoryStream())
             {
-                JsonSerializer.Serialize(ms, signedDocument);
+                JsonSerializer.Serialize(ms, signedDocumentReadDto);
                 dataToSign = ms.ToArray();
             }
             using (RSA rsa = privatekey)
@@ -94,19 +94,19 @@ namespace SignDocumentService.Controllers
                     SigneeName = signee,
                     Comment = comment,
                     Date = DateTime.Now.ToString(),
-                    StampIdentity = signedDocument.Stamps.Count + 1,
+                    StampIdentity = signedDocumentReadDto.Stamps.Count + 1,
                     TestType = testType,
                 };
-                signedDocument.Stamps.Add(stamp);
+                signedDocumentReadDto.Stamps.Add(stamp);
             }
             // http://localhost:5297/api/SignedDocument/UpdateSignedDocument/1013
-            var result = await _client.PostAsJsonAsync($"{_fileServiceBaseUrl}/UpdateSignedDocument/{signedDocument.Id}", signedDocument);
+            var result = await _client.PostAsJsonAsync($"{_fileServiceBaseUrl}/UpdateSignedDocument/{signedDocumentReadDto.Id}", signedDocumentReadDto);
             Console.WriteLine(result.StatusCode.ToString());
             if (result.IsSuccessStatusCode)
             {
                 return Ok("Signing was succesfull");
             }
-            else return StatusCode(500, $"It no worky...{result.StatusCode}, {signedDocument.Id}");
+            else return StatusCode(500, $"It no worky...{result.StatusCode}, {signedDocumentReadDto.Id}");
 
         }
     }
