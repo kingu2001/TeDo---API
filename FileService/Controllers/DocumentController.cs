@@ -18,6 +18,12 @@ namespace FileService.Controllers
             _repo = documentRepo;
             _mapper = mapper;
         }
+
+        [HttpGet("status")]
+        public IActionResult ApiStatus()
+        {
+            return Ok();
+        }
         
         [HttpGet("{id}", Name = "GetDocumentById")]
         public async Task<IActionResult> GetDocumentById(int id)
