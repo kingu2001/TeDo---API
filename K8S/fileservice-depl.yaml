@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fileservice-depl
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fileservice
+  template:
+    metadata:
+      labels:
+        app: fileservice
+    spec:
+      containers:
+        - name: fileservice
+          image: hasseg/fileservice:latest
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: fileservice-clusterip-srv
+spec:
+  type: ClusterIP 
+  selector:
+    app: fileservice
+  ports:
+    - name: fileservice
+      protocol: TCP
+      port: 8080
+      targetPort: 8080

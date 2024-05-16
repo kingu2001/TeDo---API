@@ -99,7 +99,6 @@ namespace SignDocumentService.Controllers
                 };
                 signedDocumentReadDto.Stamps.Add(stamp);
             }
-            // http://localhost:5297/api/SignedDocument/UpdateSignedDocument/1013
             var result = await _client.PostAsJsonAsync($"{_fileServiceBaseUrl}/UpdateSignedDocument/{signedDocumentReadDto.Id}", signedDocumentReadDto);
             Console.WriteLine(result.StatusCode.ToString());
             if (result.IsSuccessStatusCode)

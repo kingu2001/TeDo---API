@@ -62,29 +62,6 @@ namespace FileService.Controllers
             return Ok();
         }
 
-        //[HttpPost]
-        //[Route("/api/Document/UploadFileJson")]
-        //public ActionResult<Document> UploadFileJson(Document document)
-        //{
-        //    if (document == null)
-        //    {
-        //        return BadRequest("Missing JSON body is empty");
-        //    }
-        //    var dbSaveResult = _repo.UploadDocumentToDb(document);
-
-
-        //    if (dbSaveResult)
-        //    {
-        //        Console.WriteLine($"--> File uploaded succesfully: {document.FileName}");
-        //        return CreatedAtRoute(nameof(GetDocumentById), new { id = document.Id }, document);
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("--> File upload failed... Check repository logs for errors");
-        //        return StatusCode(500, "Upload failed... Check server logs for erros");
-        //    }
-        //}
-
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCertificateById(int id)
