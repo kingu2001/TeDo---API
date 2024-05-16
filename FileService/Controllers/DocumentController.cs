@@ -22,7 +22,7 @@ namespace FileService.Controllers
         [HttpGet("status")]
         public IActionResult ApiStatus()
         {
-            return Ok();
+            return Ok("API is running...");
         }
         
         [HttpGet("{id}", Name = "GetDocumentById")]

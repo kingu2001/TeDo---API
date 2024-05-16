@@ -29,6 +29,12 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.UseHttpsRedirection();
 
+if(builder.Environment.IsProduction())
+System.Console.WriteLine("--> Environment is i production");
+
+if(builder.Environment.IsDevelopment())
+System.Console.WriteLine("--> Environment is i development");
+
 PrepDb.PrepPopulation(app);
 
 app.Run();

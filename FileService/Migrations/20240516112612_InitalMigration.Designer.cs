@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FileService.Migrations
 {
     [DbContext(typeof(FileDbContext))]
-    [Migration("20240425082855_EvenMoreNavPropChanges")]
-    partial class EvenMoreNavPropChanges
+    [Migration("20240516112612_InitalMigration")]
+    partial class InitalMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -183,6 +183,9 @@ namespace FileService.Migrations
                     b.Property<int>("StampIdentity")
                         .HasColumnType("int");
 
+                    b.Property<string>("TestType")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SignedDocumentId");
@@ -193,9 +196,6 @@ namespace FileService.Migrations
             modelBuilder.Entity("FileService.Models.SignedDocument", b =>
                 {
                     b.HasBaseType("FileService.Models.Document");
-
-                    b.Property<string>("TestType")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("SignedDocument");
                 });
