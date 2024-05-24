@@ -28,11 +28,6 @@ namespace SignDocumentService.Controllers
         public async Task<ActionResult<string>> SignUnsignedDocument(DocumentCreateDto documentCreateDto)
         {
             var customHeaders = GetCustomRequestHeaders(Request.Headers);
-            foreach(var c in customHeaders)
-            {
-                System.Console.WriteLine($"{c.Value}");
-            }
-            return Ok();
             //create signed document
             SignedDocument signedDocument = new SignedDocument
             {
