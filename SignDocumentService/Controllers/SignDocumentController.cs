@@ -5,6 +5,7 @@ using SignDocumentService.Models;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace SignDocumentService.Controllers
 {
@@ -24,8 +25,14 @@ namespace SignDocumentService.Controllers
         }
 
         [HttpPost("SignUnsignedDocument/{id}")]
-        public async Task<ActionResult<string>> SignUnsignedDocument(DocumentCreateDto documentCreateDto, string signee, string comment, int id)
+        public async Task<ActionResult<string>> SignUnsignedDocument(DocumentCreateDto documentCreateDto)
         {
+            var customHeaders = GetCustomRequestHeaders(Request.Headers);
+            foreach(var c in customHeaders)
+            {
+                System.Console.WriteLine($"{c.Value}");
+            }
+            return Ok();
             //create signed document
             SignedDocument signedDocument = new SignedDocument
             {
@@ -35,11 +42,11 @@ namespace SignDocumentService.Controllers
                 Stamps = new List<Stamp>()
             };
 
-            Certificate cert = await _client.GetFromJsonAsync<Certificate>($"{_certificateServiceBaseUrl}+{id}");
+            Certificate cert = await _client.GetFromJsonAsync<Certificate>($"{_configuration["CertificateService"]}/+{customHeaders["x-certificateId"]}") ?? throw new ArgumentNullException(_configuration["CertificateService"]);
             X509Certificate2 certificate = new X509Certificate2(cert.CertificateData, "12345");
             //Sign document
             byte[] dataToSign;
-            RSA privatekey = certificate.GetRSAPrivateKey();
+            RSA privatekey = certificate.GetRSAPrivateKey() ?? throw new ArgumentNullException("RSA Private key was null");
             using (MemoryStream ms = new MemoryStream())
             {
                 JsonSerializer.Serialize(ms, documentCreateDto);
@@ -52,18 +59,19 @@ namespace SignDocumentService.Controllers
                 Stamp stamp = new Stamp
                 {
                     Signature = signature,
-                    SigneeName = signee,
-                    Comment = comment,
+                    SigneeName = customHeaders["x-signee"],
+                    Comment = customHeaders["x-comment"],
                     Date = DateTime.Now.ToString(),
                     StampIdentity = 1,
                     SignedDocumentId = signedDocument.Id,
+                    TestType = customHeaders["x-testType"]
                 };
                 signedDocument.Stamps.Add(stamp);
             }
 
             var signedDocumentCreateDto = _mapper.Map<SignedDocumentCreateDto>(signedDocument);
 
-            var result = await _client.PostAsJsonAsync($"{_configuration["FileService"]}", signedDocumentCreateDto);
+            var result = await _client.PostAsJsonAsync($"{_configuration["FileService"]}/", signedDocumentCreateDto);
             if (result.IsSuccessStatusCode)
             {
                 return Ok("Signing was succesfull");
@@ -74,10 +82,11 @@ namespace SignDocumentService.Controllers
         [HttpPost("SignSignedDocument/{id}")]
         public async Task<ActionResult<string>> SignSignedDocument(SignedDocumentReadDto signedDocumentReadDto, string signee, string comment, string testType, int id)
         {
-            Certificate cert = await _client.GetFromJsonAsync<Certificate>($"{_certificateServiceBaseUrl}+{id}");
+            var headers = Request.Headers;
+            Certificate cert = await _client.GetFromJsonAsync<Certificate>($"{_configuration["CertificateService"]}/+{id}") ?? throw new ArgumentNullException(_configuration["CertificateService"]);
             X509Certificate2 certificate = new X509Certificate2(cert.CertificateData, "12345");
             byte[] dataToSign;
-            RSA privatekey = certificate.GetRSAPrivateKey();
+            RSA privatekey = certificate.GetRSAPrivateKey() ?? throw new ArgumentNullException("RSA Private key was null");
             using (MemoryStream ms = new MemoryStream())
             {
                 JsonSerializer.Serialize(ms, signedDocumentReadDto);
@@ -104,7 +113,20 @@ namespace SignDocumentService.Controllers
                 return Ok("Signing was succesfull");
             }
             else return StatusCode(500, $"It no worky...{result.StatusCode}, {signedDocumentReadDto.Id}");
+        }
 
+        private Dictionary<string, string> GetCustomRequestHeaders(IHeaderDictionary requestHeaders)
+        {
+            Dictionary<string, string> customHeaders = new Dictionary<string, string>();
+            Regex regex = new Regex(@"x-*");
+            foreach (var h in requestHeaders)
+            {
+                if (regex.IsMatch(h.Key))
+                {
+                    customHeaders.Add(h.Key, h.Value);
+                }
+            }
+            return customHeaders;
         }
     }
 }

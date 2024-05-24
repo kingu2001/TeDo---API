@@ -5,6 +5,7 @@ using FileService.Data;
 using AutoMapper;
 using FileService.Dtos;
 using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 
 namespace FileService.Controllers;
 
@@ -52,7 +53,7 @@ public class SignedDocumentController : ControllerBase
         var signedDocumentReadDto = _mapper.Map<SignedDocumentReadDto>(signedDocument);
         if (result)
         {
-            return CreatedAtRoute(nameof(GetSignedDocumentById), new {signedDocumentReadDto.Id}, signedDocumentReadDto);
+            return CreatedAtRoute(nameof(GetSignedDocumentById), new { signedDocumentReadDto.Id }, signedDocumentReadDto);
         }
         else return StatusCode(500, "Creation failed");
     }
