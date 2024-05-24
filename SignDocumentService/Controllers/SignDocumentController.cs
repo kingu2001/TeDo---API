@@ -12,15 +12,13 @@ namespace SignDocumentService.Controllers
     [Route("api/[controller]")]
     public class SignDocumentController : ControllerBase
     {
-        private readonly string _fileServiceBaseUrl;
-        private readonly string _certificateServiceBaseUrl;
         private readonly HttpClient _client;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
 
-        public SignDocumentController(HttpClient httpClient, IMapper mapper)
+        public SignDocumentController(HttpClient httpClient, IMapper mapper, IConfiguration configuration)
         {
-            _fileServiceBaseUrl = "http://localhost:5297/api/SignedDocument";
-            _certificateServiceBaseUrl = "http://localhost:5297/api/Certificate/";
+            _configuration = configuration;
             _client = httpClient;
             _mapper = mapper;
         }
@@ -65,7 +63,7 @@ namespace SignDocumentService.Controllers
 
             var signedDocumentCreateDto = _mapper.Map<SignedDocumentCreateDto>(signedDocument);
 
-            var result = await _client.PostAsJsonAsync(_fileServiceBaseUrl, signedDocumentCreateDto);
+            var result = await _client.PostAsJsonAsync($"{_configuration["FileService"]}", signedDocumentCreateDto);
             if (result.IsSuccessStatusCode)
             {
                 return Ok("Signing was succesfull");
@@ -99,7 +97,7 @@ namespace SignDocumentService.Controllers
                 };
                 signedDocumentReadDto.Stamps.Add(stamp);
             }
-            var result = await _client.PostAsJsonAsync($"{_fileServiceBaseUrl}/UpdateSignedDocument/{signedDocumentReadDto.Id}", signedDocumentReadDto);
+            var result = await _client.PostAsJsonAsync($"{_configuration["FileService"]}/UpdateSignedDocument/{signedDocumentReadDto.Id}", signedDocumentReadDto);
             Console.WriteLine(result.StatusCode.ToString());
             if (result.IsSuccessStatusCode)
             {
